@@ -1,0 +1,61 @@
+# Push a tag like v1.0.0 to publish a release:
+#   git tag v1.0.0 && git push origin v1.0.0
+# The tag must match `version` in main.go and have a "## 1.0.0" section in
+# CHANGELOG.md. The release carries the binaries plus SHA256SUMS, which the
+# app's self-update requires; the image goes to ghcr.io/yfthcn/indirgen.
+name: release
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  binaries:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: stable   # newest Go with all security fixes; go.mod states the minimum
+          check-latest: true
+      - name: Tag matches main.go and CHANGELOG
+        run: |
+          v="${GITHUB_REF_NAME#v}"
+          grep -q "^var version = \"$v\"" main.go || { echo "::error::main.go version is not $v"; exit 1; }
+          grep -q "^## $v " CHANGELOG.md || { echo "::error::CHANGELOG.md has no '## $v' section"; exit 1; }
+      - name: Build (vet, test, cross-compile, SHA256SUMS)
+        run: VERSION="$GITHUB_REF_NAME" ./build.sh
+      - name: Browser extension
+        run: ./extension/build.sh
+      - name: Release notes from CHANGELOG
+        run: awk -v v="${GITHUB_REF_NAME#v}" '/^## /{p = ($2 == v); next} p' CHANGELOG.md > notes.md
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* --verify-tag --title "İndirgen $GITHUB_REF_NAME" --notes-file notes.md
+
+  image:
+    needs: binaries
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/login-action@v4
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/build-push-action@v7
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          build-args: |
+            VERSION=${{ github.ref_name }}
+            COMMIT=${{ github.sha }}
+          tags: |
+            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
+            ghcr.io/${{ github.repository }}:latest

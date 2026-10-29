@@ -1,0 +1,15 @@
+# Example of machine-specific settings. Copy to compose.override.yaml
+# (ignored by git); Compose merges it into compose.yaml automatically.
+#
+# Here: reachable only through a WireGuard address, with fixed folders and
+# a memory limit. Replace the addresses and paths with your own.
+services:
+  indirgen:
+    # build: .                 # build from a clone of the repository instead of pulling
+    ports: !override
+      - "10.0.0.1:8899:8899"
+    volumes: !override
+      - /srv/indirgen/data:/data
+      - /srv/indirgen/downloads:/downloads
+    mem_limit: 1g
+    cpus: 1.5

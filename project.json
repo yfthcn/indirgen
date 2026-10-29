@@ -1,0 +1,16 @@
+{
+  "name": "indirgen",
+  "display": "İndirgen",
+  "meaning": {
+    "tr": "indir- fiili ve -gen ekinden: durmadan indiren.",
+    "en": "Turkish indir- (to download) + -gen (one who keeps doing it): the one that keeps downloading."
+  },
+  "description": {
+    "tr": "yt-dlp ve gallery-dl'i tek arayüzde toplayan, motorlarını hep en son kararlı sürümde tutan kendi sunucunda çalışan medya indirici.",
+    "en": "Self-hosted media downloader: yt-dlp and gallery-dl behind one interface, always on the latest stable engines."
+  },
+  "repo": "yfthcn/indirgen",
+  "site": "https://kaktusdev.net",
+  "license": "MIT",
+  "author": "Y. Fatih Cin"
+}

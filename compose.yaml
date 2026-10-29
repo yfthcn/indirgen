@@ -1,0 +1,42 @@
+# İndirgen with Docker Compose.
+#
+#   mkdir -p data downloads          # before the first start, as your own user
+#   docker compose up -d
+#   docker compose exec indirgen indirgen token    # the access token
+#
+# Then open http://127.0.0.1:8899 and enter the token.
+#
+# Settings go in .env (copy .env.example); machine-specific changes such as
+# binding to a VPN address go in compose.override.yaml, which Compose merges
+# automatically and git ignores (see compose.override.example.yaml).
+#
+# Update: docker compose pull && docker compose up -d
+# The engines (yt-dlp, gallery-dl, ffmpeg, deno) update themselves inside
+# ./data; a new image is only needed for a new İndirgen.
+
+services:
+  indirgen:
+    image: ghcr.io/yfthcn/indirgen:${INDIRGEN_TAG:-latest}
+    container_name: indirgen
+    init: true                                   # reaps ffmpeg/deno children of yt-dlp
+    user: "${PUID:-1000}:${PGID:-1000}"          # owner of ./data and ./downloads (id -u / id -g)
+    restart: unless-stopped
+    ports:
+      # This computer only by default. Docker's port rules bypass ufw, so
+      # widen this on purpose: a LAN/VPN address in .env or the override.
+      - "${INDIRGEN_BIND:-127.0.0.1}:${INDIRGEN_PORT:-8899}:8899"
+    volumes:
+      - ${INDIRGEN_DATA_DIR:-./data}:/data
+      - ${INDIRGEN_DOWNLOAD_DIR:-./downloads}:/downloads
+    environment:
+      TZ: ${TZ:-UTC}
+      # Names (not IPs) you open İndirgen with, e.g. a reverse proxy domain:
+      INDIRGEN_ALLOWED_HOSTS: ${INDIRGEN_ALLOWED_HOSTS:-}
+      # GITHUB_TOKEN: ""                         # optional: higher API limit for engine update checks
+    stop_grace_period: 20s                       # running downloads are re-queued on shutdown
+    healthcheck:
+      test: ["CMD", "indirgen", "health"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3

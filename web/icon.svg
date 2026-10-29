@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <rect width="64" height="64" rx="14" fill="#15181f"/>
+  <!-- the "i" of indirgen: dot on top, stem turning into a download arrow -->
+  <g transform="translate(32 32) scale(.78) translate(-32 -32)" fill="#e3a34a">
+    <circle cx="32" cy="12" r="6.5"/>
+    <path d="M26 24h12v16h9.5L32 57 16.5 40H26z" stroke="#e3a34a" stroke-width="2" stroke-linejoin="round"/>
+  </g>
+</svg>

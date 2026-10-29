@@ -1,0 +1,29 @@
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version: stable   # newest Go with all security fixes; go.mod states the minimum
+          check-latest: true
+      - run: go vet ./...
+      - run: GOOS=darwin go vet ./...
+      - run: go test -race ./...
+      - run: test -z "$(gofmt -l .)" || { gofmt -l .; echo "::error::gofmt"; exit 1; }
+      - run: sh -n install.sh
+  minimum-go:
+    # The code must keep building with the Go version go.mod names.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-go@v6
+        with:
+          go-version-file: go.mod
+      - run: go build ./... && go test ./...

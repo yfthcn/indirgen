@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title data-i18n="optTitle"></title>
+<style>
+  :root{color-scheme:light dark;--bg:#fff;--fg:#1d1f24;--muted:#636a7a;--line:#d3ccc0;--accent:#b8761c;--ok:#2f9e6e;--bad:#c0392b}
+  @media (prefers-color-scheme:dark){:root{--bg:#181b22;--fg:#e8eaef;--muted:#8a92a6;--line:#353b49;--accent:#e3a34a;--ok:#4cc38a;--bad:#ff6b6b}}
+  body{margin:0;padding:16px;background:var(--bg);color:var(--fg);font:14px/1.45 system-ui,sans-serif;min-width:360px}
+  h1{font-size:16px;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+  h1 img{width:22px;height:22px}
+  label{display:grid;gap:4px;margin-bottom:12px;font-weight:600}
+  input,select{font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:8px;background:transparent;color:inherit}
+  input:focus,select:focus{outline:0;border-color:var(--accent)}
+  small{font-weight:400;color:var(--muted)}
+  button{font:inherit;font-weight:600;padding:8px 14px;border:0;border-radius:8px;background:var(--accent);color:#1a1206;cursor:pointer}
+  #status{margin-top:12px;min-height:1.4em}
+  .ok{color:var(--ok)} .bad{color:var(--bad)}
+  p.hint{color:var(--muted);font-size:12.5px;margin:14px 0 0}
+</style>
+</head>
+<body>
+  <h1><img src="icons/48.png" alt=""><span data-i18n="optTitle"></span></h1>
+  <label><span data-i18n="optServer"></span><input id="server" type="url" spellcheck="false"><small data-i18n="optServerHint"></small></label>
+  <label><span data-i18n="optToken"></span><input id="token" type="password" spellcheck="false" autocomplete="off"><small data-i18n="optTokenHint"></small></label>
+  <label><span data-i18n="optMode"></span>
+    <select id="mode"><option value="library" data-i18n="optModeLibrary"></option><option value="temp" data-i18n="optModeTemp"></option></select></label>
+  <button id="save" data-i18n="optSave"></button>
+  <div id="status"></div>
+  <p class="hint" data-i18n="optShortcut"></p>
+  <script src="common.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

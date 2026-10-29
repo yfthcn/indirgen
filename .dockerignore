@@ -1,0 +1,14 @@
+.git
+.github
+dist
+data
+downloads
+extension
+.env
+compose*.yaml
+*.md
+!CHANGELOG.md
+indirgen
+indirgen.old
+*.tmp
+Dockerfile

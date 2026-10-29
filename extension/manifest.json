@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_name__",
+  "short_name": "İndirgen",
+  "description": "__MSG_description__",
+  "version": "1.3.0",
+  "default_locale": "en",
+  "homepage_url": "https://github.com/yfthcn/indirgen",
+  "icons": { "16": "icons/16.png", "32": "icons/32.png", "48": "icons/48.png", "128": "icons/128.png" },
+  "action": { "default_title": "__MSG_actionTitle__", "default_icon": { "16": "icons/16.png", "32": "icons/32.png" } },
+  "background": { "service_worker": "background.js" },
+  "options_ui": { "page": "options.html", "open_in_tab": false },
+  "permissions": ["contextMenus", "storage", "notifications", "activeTab"],
+  "host_permissions": ["http://127.0.0.1/*", "http://localhost/*"],
+  "optional_host_permissions": ["http://*/*", "https://*/*"],
+  "commands": {
+    "send-page": { "suggested_key": { "default": "Alt+Shift+I" }, "description": "__MSG_actionTitle__" }
+  }
+}

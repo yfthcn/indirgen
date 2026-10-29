@@ -1,0 +1,26 @@
+# Build output
+/dist/
+/indirgen
+*.tmp
+
+# Personal data must never be committed. İndirgen keeps it outside the
+# repository (~/.local/share/indirgen, or ./data with Docker); these lines are
+# the safety net for copies that end up here by accident.
+/data/
+/downloads/
+.env
+compose.override.yaml
+config.json
+jobs.json
+subscriptions.json
+telegram.json
+sessions.json
+api-cache.json
+cookies/
+archive/
+engines/
+*cookies*.txt
+indirgen-yedek-*.zip
+
+# Local editor and assistant settings
+.claude/settings.local.json

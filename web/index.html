@@ -1,0 +1,287 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f5f3ef" media="(prefers-color-scheme: light)">
+<meta name="referrer" content="no-referrer">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="İndirgen">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<title>İndirgen</title>
+<link rel="icon" href="/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="stylesheet" href="/app.css">
+</head>
+<body>
+
+<svg width="0" height="0" class="u-abs" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 64 64"><circle cx="32" cy="12" r="6.5" fill="var(--accent)"/><path d="M26 24h12v16h9.5L32 57 16.5 40H26z" fill="var(--accent)" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 19h16"/></symbol>
+  <symbol id="i-stop" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></symbol>
+  <symbol id="i-retry" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 0 1 15.5-6.2L21 8M21 3v5h-5M21 12a9 9 0 0 1-15.5 6.2L3 16m0 5v-5h5"/></symbol>
+  <symbol id="i-more" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></symbol>
+  <symbol id="i-img" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m21 16-5-5-9 9"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m10 9 5 3-5 3z"/></symbol>
+  <symbol id="i-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2.5h8.5A1.5 1.5 0 0 1 21 9v9.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13a1 1 0 0 0 1.5.9l10.5-6.5a1 1 0 0 0 0-1.8L9.5 4.6A1 1 0 0 0 8 5.5z"/></symbol>
+  <symbol id="i-file" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M6 3h8l5 5v13H6zM14 3v5h5"/></symbol>
+  <symbol id="i-zip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16v13H4zM4 7l2-4h12l2 4M10 11h4"/></symbol>
+</svg>
+
+<div id="login" class="login hidden">
+  <form id="loginForm">
+    <svg><use href="#logo"/></svg>
+    <h2 class="u-m-title">İndirgen</h2>
+    <div class="seg login-seg" id="loginSeg"><button type="button" data-v="token" data-t="login_tab_token"></button><button type="button" data-v="pair" data-t="login_tab_pair"></button></div>
+    <label class="hint" for="tokenIn" id="loginLabel" data-t="login_hint"></label>
+    <input id="tokenIn" type="password" autocomplete="current-password" required>
+    <input id="pairIn" class="hidden" type="text" autocapitalize="characters" autocomplete="one-time-code" spellcheck="false" maxlength="11" placeholder="ABCD-EFGH">
+    <button class="btn primary u-center" data-t="login_btn"></button>
+  </form>
+</div>
+
+<div id="app" class="hidden">
+<header><div class="wrap">
+  <a class="brand" href="/"><svg><use href="#logo"/></svg><b>İndirgen</b><code class="ver u-pointer" id="appVer" role="button"></code><span data-t="tagline"></span></a>
+  <div class="grow"></div>
+  <button class="pill" id="engPill" title=""><i class="dot" id="engDot"></i><span id="engTxt">…</span></button>
+  <button class="iconbtn" id="settingsBtn" aria-label="settings"><svg><use href="#i-gear"/></svg></button>
+</div></header>
+
+<main class="wrap">
+  <div class="intake">
+    <textarea id="urls" spellcheck="false" autocomplete="off" placeholder="https://www.youtube.com/watch?v=…&#10;https://x.com/…/status/…&#10;https://www.instagram.com/p/…"></textarea>
+    <div class="clip hidden" id="clip"><span>📋 <span data-t="clip_has"></span> <b id="clipUrl"></b></span>
+      <button class="btn sm primary" id="clipAdd" data-t="clip_add"></button><button class="iconbtn" id="clipX" aria-label="✕"><svg><use href="#i-x"/></svg></button></div>
+    <div class="intake-bar">
+      <span class="hint" data-t="intake_hint"></span>
+      <button class="btn sm ghost hidden" id="clipAsk">📋 <span data-t="clip_ask"></span></button>
+      <div class="grow"></div>
+      <span class="hint" data-t="dest"></span>
+      <div class="seg" id="destSeg">
+        <button data-v="library" data-t="dest_library"></button>
+        <button data-v="temp" data-t="dest_temp"></button>
+      </div>
+      <button class="btn primary" id="fetchBtn"><span data-t="fetch"></span> <kbd class="u-kbd-on-accent">⌃↵</kbd></button>
+    </div>
+  </div>
+
+  <div id="prepSec" class="hidden">
+    <div class="sec"><h2 data-t="prep"></h2><span class="count" id="prepCount"></span><div class="grow"></div>
+      <button class="btn sm ghost" id="prepClear" data-t="clear"></button>
+      <button class="btn sm primary" id="sendAll"><svg><use href="#i-dl"/></svg><span data-t="send_all"></span></button>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+
+  <div class="sec">
+    <div class="views" id="viewSeg"><button data-v="jobs"><span data-t="hunt"></span><span class="count" id="jobCount"></span></button><button data-v="library" data-t="archive"></button><button data-v="subs" data-t="subs"></button></div>
+    <div class="grow"></div>
+    <div class="libtools" id="jobTools">
+      <div class="tabs" id="tabs">
+        <button data-f="all" class="on" data-t="f_all"></button>
+        <button data-f="active" data-t="f_active"></button>
+        <button data-f="done" data-t="f_done"></button>
+        <button data-f="error" data-t="f_error"></button>
+      </div>
+      <button class="btn sm ghost" id="clearDone" data-t="clear_finished"></button>
+    </div>
+    <div class="libtools hidden" id="libTools">
+      <input class="libin" id="libQ" type="search" autocomplete="off" data-tp="lib_search">
+      <select class="libin" id="libSort">
+        <option value="new" data-t="sort_new"></option><option value="old" data-t="sort_old"></option>
+        <option value="size" data-t="sort_size"></option><option value="name" data-t="sort_name"></option>
+      </select>
+      <div class="seg" id="libMode"><button data-v="dirs" data-t="lib_folders"></button><button data-v="flat" data-t="lib_flat"></button></div>
+      <button class="btn sm" id="libSelBtn" data-t="lib_select"></button>
+    </div>
+  </div>
+  <div class="qbanner hidden" id="qBanner"></div>
+  <div class="jobs" id="jobs"></div>
+  <div id="libView" class="hidden">
+    <div class="libbar"><div class="crumbs" id="libCrumbs"></div><span class="libstat" id="libStat"></span></div>
+    <div class="selbar hidden" id="selBar"></div>
+    <div id="libList"></div>
+    <div class="libmore" id="libMore"></div>
+  </div>
+  <div id="subsView" class="hidden"><div id="subsList"></div><div class="hint u-m-note" data-t="subs_note"></div></div>
+  <footer class="foot" id="foot" title=""></footer>
+</main>
+</div>
+
+<div id="drawerRoot" class="hidden">
+  <div class="setpage" id="setPage">
+    <div class="sethead"><div class="setwrap">
+      <button class="btn sm ghost" id="closeDrawer"><svg><use href="#i-back"/></svg><span>İndirgen</span></button>
+      <b data-t="settings"></b><div class="grow"></div>
+      <div class="seg" id="langSeg"><button data-v="tr">TR</button><button data-v="en">EN</button></div>
+      <div class="seg" id="themeSeg"><button data-v="auto">◐</button><button data-v="dark">☾</button><button data-v="light">☀</button></div>
+    </div></div>
+    <div class="setwrap setbody">
+      <nav class="setnav" id="setNav">
+        <button data-sec="s-engines" data-t="engines"></button>
+        <button data-sec="s-cookies" data-t="cookies"></button>
+        <button data-sec="s-pace" data-t="bot"></button>
+        <button data-sec="s-storage" data-t="st_title"></button>
+        <button data-sec="s-queue" data-t="q_title"></button>
+        <button data-sec="s-telegram" data-t="tg"></button>
+        <button data-sec="s-conn" data-t="conn"></button>
+        <button data-sec="s-backup" data-t="bk_title"></button>
+        <button data-sec="s-about" data-t="about"></button>
+      </nav>
+      <div class="setmain">
+        <section id="s-engines"><h3 data-t="engines"></h3><p class="sdesc" data-t="engines_desc"></p>
+    <div class="panel" id="engList"></div>
+    <div class="u-row u-mt10">
+      <span class="grow"></span>
+      <button class="btn sm" id="engUpdate"><svg><use href="#i-retry"/></svg><span data-t="check_now"></span></button>
+    </div>
+
+        </section>
+        <section id="s-cookies"><h3 data-t="cookies"></h3><p class="sdesc" data-t="cookies_desc"></p>
+    <div class="panel">
+      <div class="bcrow" id="bcRow"></div>
+      <div id="cookieList"></div>
+      <div class="field u-sep" id="cookieAdd">
+        <span class="hint" data-t="cookies_hint"></span>
+        <textarea id="cookieText" spellcheck="false" placeholder="# Netscape HTTP Cookie File&#10;[ {&quot;domain&quot;: &quot;.instagram.com&quot;, … } ]"></textarea>
+        <div class="u-row">
+          <label class="btn sm"><input type="file" id="cookieFile" accept=".txt,.json,text/plain,application/json" hidden><span data-t="pick_file"></span></label>
+          <div class="grow"></div>
+          <button class="btn sm" id="cookieAnalyze" data-t="ck_analyze"></button>
+        </div>
+      </div>
+      <div class="ckprev hidden" id="cookiePreview"></div>
+      <input type="file" id="cookieRefreshFile" accept=".txt,.json,text/plain,application/json" hidden>
+    </div>
+
+        </section>
+        <section id="s-pace"><h3 data-t="bot"></h3><p class="sdesc" data-t="pace_sdesc"></p>
+    <div class="panel field" id="pacePanel">
+      <div class="seg" id="paceSeg">
+        <button data-v="careful" data-t="pace_careful"></button><button data-v="normal" data-t="pace_normal"></button>
+        <button data-v="fast" data-t="pace_fast"></button><button data-v="custom" data-t="pace_custom"></button>
+      </div>
+      <div class="hint" id="paceDesc"></div>
+      <div class="pacegrid hidden" id="paceCustom">
+        <label><span data-t="req_label"></span><input type="text" id="pReq" placeholder="6-12"></label>
+        <label><span data-t="file_label"></span><input type="text" id="pFile" placeholder="1-3"></label>
+      </div>
+      <label><span data-t="max_label"></span><input type="number" id="pMax" min="0" step="10"></label>
+      <div class="hint" data-t="bot_note"></div>
+      <div class="u-flex"><div class="grow"></div><button class="btn sm primary" id="paceSave" data-t="save"></button></div>
+    </div>
+
+        </section>
+        <section id="s-storage"><h3 data-t="st_title"></h3><p class="sdesc" data-t="st_desc"></p>
+    <div class="panel field">
+      <label><span data-t="st_lib"></span></label>
+      <div class="dirrow"><code id="stPath"></code><button class="btn sm" id="stPick" data-t="st_change"></button></div>
+      <div class="hint" id="stHint"></div>
+      <label><span data-t="st_layout"></span></label>
+      <div><div class="seg" id="stLayout"><button data-v="site" data-t="st_site"></button><button data-v="flat" data-t="st_flat"></button></div></div>
+      <div class="hint" data-t="st_layout_h"></div>
+    </div>
+        </section>
+        <section id="s-queue"><h3 data-t="q_title"></h3><p class="sdesc" data-t="q_desc"></p>
+    <div class="panel field" id="qPanel">
+      <div class="qgrid">
+        <label><span data-t="q_rate"></span><select id="qRate"></select></label>
+        <label><span data-t="q_night"></span><span class="timepair"><input type="time" id="qNightS" step="300"> – <input type="time" id="qNightE" step="300"></span></label>
+        <label><span data-t="q_min"></span><select id="qMin"></select></label>
+      </div>
+      <div class="hint" data-t="q_rate_h"></div>
+      <div class="hint" data-t="q_night_h"></div>
+      <div class="hint" id="qFree"></div>
+      <label class="chkrow"><input type="checkbox" id="qNotify"><span data-t="q_notify"></span></label>
+      <div class="hint" id="qNotifyHint"></div>
+      <div class="u-flex"><div class="grow"></div><button class="btn sm primary" id="qSave" data-t="save"></button></div>
+    </div>
+        </section>
+        <section id="s-telegram"><h3 data-t="tg"></h3><p class="sdesc" data-t="tg_desc"></p>
+          <div class="panel conn" id="tgPanel"></div>
+        </section>
+        <section id="s-conn"><h3 data-t="conn"></h3><p class="sdesc" data-t="conn_desc"></p>
+          <div class="panel conn" id="connPanel"></div>
+        </section>
+        <section id="s-backup"><h3 data-t="bk_title"></h3><p class="sdesc" data-t="bk_desc"></p>
+    <div class="panel field">
+      <div class="warnbox" data-t="bk_warn"></div>
+      <div class="u-row u-wrap">
+        <a class="btn sm primary" href="/api/backup" download><svg><use href="#i-dl"/></svg><span data-t="bk_get"></span></a>
+        <label class="btn sm"><input type="file" id="bkFile" accept=".zip,application/zip" hidden><span data-t="bk_restore"></span></label>
+      </div>
+      <div class="hint" data-t="bk_restore_h"></div>
+    </div>
+        </section>
+        <section id="s-about"><h3 data-t="about" id="aboutHead"></h3>
+          <div class="panel about" id="aboutPanel"></div>
+          <div id="logoutRow" class="hidden u-mt12"><button class="btn sm ghost" id="logoutBtn" data-t="logout"></button></div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="dirRoot" class="hidden">
+  <div class="scrim" id="dirScrim"></div>
+  <section class="dirpick" role="dialog" aria-modal="true">
+    <div class="mhead"><b data-t="st_pick"></b><button class="iconbtn" id="dirClose"><svg><use href="#i-x"/></svg></button></div>
+    <div class="dplaces" id="dirPlaces"></div>
+    <div class="dpath"><button class="btn sm ghost" id="dirUp" title="↑">↑</button><code id="dirPath"></code></div>
+    <div class="dlist" id="dirList"></div>
+    <div class="dfoot"><button class="btn sm ghost" id="dirNew" data-t="st_new"></button><div class="grow"></div>
+      <button class="btn sm" id="dirCancel" data-t="ck_cancel"></button><button class="btn sm primary" id="dirChoose" data-t="st_choose"></button></div>
+  </section>
+</div>
+<div id="pvRoot" class="hidden">
+  <div class="scrim" id="pvScrim"></div>
+  <section class="pv" role="dialog" aria-modal="true">
+    <div class="mhead"><b id="pvTitle"></b>
+      <a class="btn sm" id="pvDl"><svg><use href="#i-dl"/></svg><span data-t="lib_download"></span></a>
+      <button class="iconbtn" id="pvClose"><svg><use href="#i-x"/></svg></button></div>
+    <div class="pvbody" id="pvBody"></div>
+  </section>
+</div>
+
+<div id="browseRoot" class="hidden">
+  <div class="scrim" id="bScrim"></div>
+  <section class="modal" role="dialog" aria-modal="true">
+    <div class="mhead">
+      <b id="bTitle"></b>
+      <div class="tabs" id="bTabs"></div>
+      <div class="grow"></div>
+      <button class="iconbtn" id="bClose"><svg><use href="#i-x"/></svg></button>
+    </div>
+    <div class="mtool">
+      <span class="hint" id="bInfo"></span><div class="grow"></div>
+      <button class="btn sm ghost" id="bAll" data-t="b_all"></button>
+      <button class="btn sm ghost" id="bNone" data-t="b_none"></button>
+    </div>
+    <div class="grid" id="bGrid"></div>
+    <div class="mfoot">
+      <button class="btn sm" id="bMore"><span data-t="b_more"></span></button>
+      <span class="hint" id="bPace"></span>
+      <div class="grow"></div>
+      <span class="hint" id="bSel"></span>
+      <button class="btn primary" id="bSend"><svg><use href="#i-dl"/></svg><span data-t="b_send"></span></button>
+    </div>
+  </section>
+</div>
+
+<div class="toasts" id="toasts"></div>
+
+<script defer src="/i18n.js"></script>
+<script defer src="/app.js"></script>
+</body>
+</html>
