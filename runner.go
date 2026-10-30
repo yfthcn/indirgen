@@ -25,6 +25,7 @@ type JobOptions struct {
 	NewOnly  bool     `json:"new_only,omitempty"` // skip anything downloaded before (archive)
 	Night    bool     `json:"night,omitempty"`    // start only inside the night window
 	Limit    int      `json:"limit,omitempty"`    // only the newest N items/posts (subscriptions)
+	Mark     bool     `json:"mark,omitempty"`     // record the newest Limit in the archive, download nothing
 }
 
 func (o *JobOptions) normalize() {
@@ -42,11 +43,13 @@ func (o *JobOptions) normalize() {
 	o.Sections = validSections(o.Sections)
 	o.Items = validIGItems(o.Items)
 	o.Limit = min(max(o.Limit, 0), 500)
+	o.Mark = o.Mark && o.NewOnly && o.Limit > 0 // marking writes the archive of the newest Limit
 }
 
 const (
 	progPrefix = "SGR:P|"
 	filePrefix = "SGR:F|"
+	markPrefix = "SGR:M|" // an entry a marking run recorded in the archive
 	dirPrefix  = "SGR:D|" // planned path, printed before yt-dlp creates its folder
 	progTmpl   = "download:" + progPrefix +
 		"%(progress.status)s|%(progress.downloaded_bytes)s|%(progress.total_bytes)s|" +
@@ -67,6 +70,9 @@ type ytdlpPaths struct {
 }
 
 func ytdlpArgs(o JobOptions, p ytdlpPaths, link string) []string {
+	if o.Mark {
+		return ytdlpMarkArgs(o, p, link)
+	}
 	a := []string{
 		"--ignore-config", "--color", "never", "--newline", "--progress",
 		"--progress-template", progTmpl,
@@ -117,15 +123,43 @@ func ytdlpArgs(o JobOptions, p ytdlpPaths, link string) []string {
 	if o.Sponsor {
 		a = append(a, "--sponsorblock-remove", "sponsor,selfpromo,interaction")
 	}
-	// Pacing only where it matters: bot-sensitive sites and playlists.
-	if (p.Sensitive || o.Playlist) && p.Pace.Request != "" {
-		lo, _ := durationBounds(p.Pace.Request)
-		a = append(a, "--sleep-requests", lo)
-		if flo, fhi := durationBounds(p.Pace.File); fhi != "0" {
-			a = append(a, "--sleep-interval", flo, "--max-sleep-interval", fhi)
-		}
-	}
+	a = append(a, ytdlpPacing(o, p, true)...)
 	return append(a, "--", link)
+}
+
+// ytdlpMarkArgs lists the newest o.Limit entries and records them in the
+// download archive without downloading anything: --force-write-archive
+// writes entries even under --skip-download. Each recorded entry is printed
+// once; entries already in the archive are skipped before extraction.
+func ytdlpMarkArgs(o JobOptions, p ytdlpPaths, link string) []string {
+	a := []string{
+		"--ignore-config", "--color", "never", "--newline", "--retries", "10",
+		"--skip-download", "--force-write-archive", "--download-archive", p.Archive,
+		"--print", "video:" + markPrefix + "%(id)s",
+	}
+	a = append(a, p.Cookies.YTDLP()...)
+	if o.Playlist {
+		a = append(a, "--yes-playlist")
+	} else {
+		a = append(a, "--no-playlist")
+	}
+	a = append(a, "--playlist-items", fmt.Sprintf("1:%d", o.Limit))
+	a = append(a, ytdlpPacing(o, p, false)...)
+	return append(a, "--", link)
+}
+
+// ytdlpPacing: only where it matters, on bot-sensitive sites and playlists.
+// files adds the pause between downloads.
+func ytdlpPacing(o JobOptions, p ytdlpPaths, files bool) []string {
+	if !(p.Sensitive || o.Playlist) || p.Pace.Request == "" {
+		return nil
+	}
+	lo, _ := durationBounds(p.Pace.Request)
+	a := []string{"--sleep-requests", lo}
+	if flo, fhi := durationBounds(p.Pace.File); files && fhi != "0" {
+		a = append(a, "--sleep-interval", flo, "--max-sleep-interval", fhi)
+	}
+	return a
 }
 
 // outputTemplate is the yt-dlp -o template: the archive layout (Site/Channel,
@@ -209,6 +243,11 @@ func gallerydlArgs(o JobOptions, r gallerydlRun) []string {
 	}
 	if o.NewOnly && r.Archive != "" {
 		a = append(a, "--download-archive", r.Archive)
+		if o.Mark {
+			// -s lists without downloading; with archive-event=skip that
+			// listing writes the archive (gallery-dl's SimulationJob, job.py).
+			a = append(a, "-s", "-o", "archive-event=skip")
+		}
 	}
 	switch {
 	case o.Limit > 0 && len(o.Items) == 0:

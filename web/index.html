@@ -244,6 +244,21 @@
       <button class="btn sm" id="dirCancel" data-t="ck_cancel"></button><button class="btn sm primary" id="dirChoose" data-t="st_choose"></button></div>
   </section>
 </div>
+<div id="subRoot" class="hidden">
+  <div class="scrim" id="subScrim"></div>
+  <section class="dirpick subdlg" role="dialog" aria-modal="true" aria-labelledby="subTitle">
+    <div class="mhead"><b id="subTitle" data-t="sub_dlg_title"></b><button class="iconbtn" id="subClose" aria-label="✕"><svg><use href="#i-x"/></svg></button></div>
+    <div class="subbody">
+      <div class="subwhat" id="subWhat"></div>
+      <label class="subfield"><span data-t="sub_dlg_every"></span><select class="q" id="subEvery"></select></label>
+      <label class="subfield"><span data-t="sub_dlg_last"></span><select class="q" id="subLast"></select></label>
+      <label class="chk"><input type="checkbox" id="subFromNow"><span data-t="sub_dlg_fromnow"></span></label>
+      <div class="hint" id="subHint" aria-live="polite"></div>
+    </div>
+    <div class="dfoot"><div class="grow"></div>
+      <button class="btn sm" id="subCancel" data-t="ck_cancel"></button><button class="btn sm primary" id="subOk" data-t="subscribe"></button></div>
+  </section>
+</div>
 <div id="pvRoot" class="hidden">
   <div class="scrim" id="pvScrim"></div>
   <section class="pv" role="dialog" aria-modal="true">

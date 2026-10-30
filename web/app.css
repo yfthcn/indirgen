@@ -93,6 +93,10 @@ header .wrap{display:flex;align-items:center;gap:var(--sp-3);height:58px;padding
 .dlist button:hover{background:var(--surface)}
 .dlist svg{width:16px;height:16px;flex:none;color:var(--accent-text)}
 .dlist .msg{padding:var(--sp-4);color:var(--muted);font-size:var(--fs-sm)}
+.subbody{display:grid;gap:var(--sp-3);padding:var(--sp-4)}
+.subwhat{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.subfield{display:flex;align-items:center;justify-content:space-between;gap:var(--sp-3);flex-wrap:wrap}
+#subRoot .scrim{z-index:50}
 .dfoot{display:flex;align-items:center;gap:var(--sp-2);padding:var(--sp-3) var(--sp-4);flex-wrap:wrap}
 .eact{display:flex;gap:var(--sp-2);align-items:center;flex-wrap:wrap;justify-content:flex-end}
 .seg.sm button{padding:var(--sp-1) var(--sp-2);font-size:var(--fs-xs)}

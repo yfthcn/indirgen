@@ -41,7 +41,11 @@ type Subscription struct {
 	LastNew   int        `json:"last_new"`
 	LastError string     `json:"last_error,omitempty"`
 	TotalNew  int        `json:"total_new"`
-	Running   bool       `json:"running,omitempty"` // a job of it is queued or running (not stored)
+	// "Only what comes next": the next check records the newest N as seen
+	// instead of downloading them. LastMarked is what that check recorded.
+	MarkPending bool `json:"mark_pending,omitempty"`
+	LastMarked  int  `json:"last_marked,omitempty"`
+	Running     bool `json:"running,omitempty"` // a job of it is queued or running (not stored)
 }
 
 type NewSub struct {
@@ -51,6 +55,7 @@ type NewSub struct {
 	Thumb     string     `json:"thumb"`
 	Opts      JobOptions `json:"opts"`
 	IntervalH int        `json:"interval_h"`
+	FromNow   bool       `json:"from_now"` // download nothing that is there now, only what comes next
 }
 
 type SubPatch struct {
@@ -181,6 +186,7 @@ func (s *Subs) Add(n NewSub) (Subscription, error) {
 		x.Thumb = n.Thumb
 	}
 	x.IntervalH = nearest(subIntervals, n.IntervalH, 6)
+	x.MarkPending = n.FromNow
 	x.Next = now // check now
 	s.saveLocked()
 	v := *x
@@ -290,7 +296,9 @@ func (s *Subs) tick() {
 	s.mu.Unlock()
 
 	for _, x := range due {
-		v, err := s.q.Add(NewJob{URL: x.URL, Engine: x.Engine, Title: x.Title, Thumb: x.Thumb, Opts: x.Opts, Sub: x.ID, Source: "sub"})
+		o := x.Opts
+		o.Mark = x.MarkPending
+		v, err := s.q.Add(NewJob{URL: x.URL, Engine: x.Engine, Title: x.Title, Thumb: x.Thumb, Opts: o, Sub: x.ID, Source: "sub"})
 		s.mu.Lock()
 		if it, ok := s.items[x.ID]; ok {
 			if err != nil {
@@ -315,8 +323,15 @@ func (s *Subs) jobFinished(j Job) {
 	s.mu.Lock()
 	x, ok := s.items[j.Sub]
 	if ok && x.LastJob == j.ID {
-		x.LastNew = len(j.Files)
-		x.TotalNew += len(j.Files)
+		// A marking check downloaded nothing: it counts as seen, not as new.
+		x.LastNew, x.LastMarked = len(j.Files), 0
+		if j.Opts.Mark {
+			x.LastNew = 0
+			if j.Status == StDone {
+				x.MarkPending, x.LastMarked = false, j.Marked
+			}
+		}
+		x.TotalNew += x.LastNew
 		x.LastError = ""
 		if j.Status == StError {
 			x.LastError = j.Error

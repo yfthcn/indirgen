@@ -56,6 +56,7 @@ type Job struct {
 	Items     int        `json:"items,omitempty"`
 	Files     []string   `json:"files,omitempty"`
 	Existing  []string   `json:"existing,omitempty"` // already on disk before this run (served, never deleted or counted as new)
+	Marked    int        `json:"marked,omitempty"`   // entries a marking run recorded as seen
 	Crashes   int        `json:"crashes,omitempty"`  // runs cut short by İndirgen itself stopping
 	Error     string     `json:"error,omitempty"`
 	Note      string     `json:"note,omitempty"` // UI message key, e.g. "no_new"
@@ -722,6 +723,8 @@ func (q *Queue) finish(ctx context.Context, id string, err error) {
 	case err == nil:
 		j.Status, j.Progress, j.Finished = StDone, 1, time.Now()
 		switch {
+		case j.Opts.Mark:
+			j.Note = "marked" // the newest N recorded as seen, nothing downloaded
 		case len(j.Files) > 0:
 		case len(j.Existing) > 0:
 			j.Note = "had_all" // everything was already downloaded
@@ -953,6 +956,10 @@ func (q *Queue) runYTDLP(ctx context.Context, j Job, home string) error {
 			if f != "" && f != "NA" {
 				q.update(j.ID, true, func(x *Job) { x.Files = appendUnique(x.Files, f) })
 			}
+			continue
+		}
+		if strings.HasPrefix(line, markPrefix) {
+			q.update(j.ID, false, func(x *Job) { x.Marked++ })
 		}
 	}
 	drain(stdout)
@@ -969,7 +976,7 @@ func (q *Queue) runYTDLP(ctx context.Context, j Job, home string) error {
 	if err != nil {
 		cur, _ := q.Get(j.ID)
 		// Playlists may partially fail; keep what succeeded.
-		if j.Opts.Playlist && len(cur.Files) > 0 {
+		if j.Opts.Playlist && len(cur.Files)+cur.Marked > 0 {
 			return nil
 		}
 		return engineError(tail.String(), err)
@@ -1021,6 +1028,10 @@ func (q *Queue) runGalleryDL(ctx context.Context, j Job, home string) error {
 		if !filepath.IsAbs(p) {
 			p = filepath.Join(home, p)
 		}
+		if skipped && j.Opts.Mark { // "# name": listed and recorded, not downloaded
+			q.update(j.ID, false, func(x *Job) { x.Marked++ })
+			continue
+		}
 		if skipped { // "# path": downloaded earlier, by another job
 			q.update(j.ID, false, func(x *Job) { x.Existing = appendUnique(x.Existing, p) })
 			continue
@@ -1047,7 +1058,7 @@ func (q *Queue) runGalleryDL(ctx context.Context, j Job, home string) error {
 		return ctx.Err()
 	}
 	cur, _ := q.Get(j.ID)
-	if err != nil && len(cur.Files) == 0 {
+	if err != nil && len(cur.Files)+cur.Marked == 0 {
 		return engineError(tail.String(), err)
 	}
 	return nil

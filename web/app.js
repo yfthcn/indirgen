@@ -219,7 +219,7 @@ $("#cards").addEventListener("click", e => {
   else if (act==="preset"){ c.opts.preset=b.dataset.v; rememberDefaults(c.opts); renderCards(); }
   else if (act==="send"){ busy(b, () => send([c])); }
   else if (act==="expv"){ const f=c.res.existing.files[0]; previewOne(f.name, f.url, f.kind); }
-  else if (act==="subscribe"){ subscribe(c); }
+  else if (act==="subscribe"){ openSubDialog(c, b); }
   else if (act==="sec"){ const v=b.dataset.v, i=c.opts.sections.indexOf(v); i>=0 ? c.opts.sections.splice(i,1) : c.opts.sections.push(v); renderCards(); }
   else if (act==="browse"){ openBrowse(c); }
   else if (act==="settings"){ openDrawer("s-cookies"); }
@@ -255,16 +255,52 @@ async function send(cards){
   }catch(e){ toast(e.message, true); }
 }
 
-async function subscribe(c){
-  const r = c.res, prof = r.kind==="profile";
+// The subscribe dialog: how often to check, how many of the newest, and
+// whether to skip what is there now (the first check only marks it as seen).
+const SD = {card:null, back:null};
+const intervalLabel = h => h===168 ? t("sub_weekly") : t("sub_every",{h:hoursLabel(h)});
+function openSubDialog(c, from){
+  SD.card = c; SD.back = from;
+  const opts = (list, cur, fmt) => list.map(v=>`<option value="${v}" ${v===cur?"selected":""}>${esc(fmt(v))}</option>`).join("");
+  $("#subEvery").innerHTML = opts(SB.intervals, 6, intervalLabel);
+  $("#subLast").innerHTML = opts(SB.limits, 10, n=>t("sub_last",{n}));
+  $("#subFromNow").checked = false;
+  $("#subWhat").textContent = c.res.kind==="profile" ? `@${c.res.profile.user}` : c.res.title;
+  subHint();
+  $("#subRoot").classList.remove("hidden");
+  $("#subEvery").focus();
+}
+function subHint(){ $("#subHint").textContent = t($("#subFromNow").checked ? "sub_dlg_mark" : "sub_dlg_now", {n: +$("#subLast").value}); }
+function closeSubDialog(){
+  $("#subRoot").classList.add("hidden");
+  SD.back?.isConnected && SD.back.focus();
+  SD.card = SD.back = null;
+}
+$("#subLast").onchange = subHint;
+$("#subFromNow").onchange = subHint;
+$("#subScrim").onclick = $("#subClose").onclick = $("#subCancel").onclick = closeSubDialog;
+$("#subOk").onclick = e => { const c = SD.card; if (!c) return;
+  const choice = {interval_h: +$("#subEvery").value, limit: +$("#subLast").value, from_now: $("#subFromNow").checked};
+  busy(e.currentTarget, async () => { if (await subscribe(c, choice)) closeSubDialog(); }); };
+// Tab stays inside the dialog
+$("#subRoot").addEventListener("keydown", e => {
+  if (e.key!=="Tab") return;
+  const f = [...$("#subRoot section").querySelectorAll("button,select,input")].filter(x => !x.disabled);
+  const i = f.indexOf(document.activeElement);
+  if (e.shiftKey && i<=0){ e.preventDefault(); f.at(-1).focus(); }
+  else if (!e.shiftKey && i===f.length-1){ e.preventDefault(); f[0].focus(); }
+});
+async function subscribe(c, choice){
+  const r = c.res, prof = r.kind==="profile", {interval_h, limit, from_now} = choice;
   const body = prof
-    ? {url:r.url, engine:"gallery-dl", title:`@${r.profile.user}`, opts:{sections:[...c.opts.sections]}}
-    : {url:r.url, engine:r.engine, title:r.title, thumb:r.thumbnail||"", opts:{...c.opts, playlist: c.opts.playlist || r.is_playlist}};
+    ? {url:r.url, engine:"gallery-dl", title:`@${r.profile.user}`, interval_h, from_now, opts:{sections:[...c.opts.sections], limit}}
+    : {url:r.url, engine:r.engine, title:r.title, thumb:r.thumbnail||"", interval_h, from_now, opts:{...c.opts, limit, playlist: c.opts.playlist || r.is_playlist}};
   try{
     await api("/api/subs", {method:"POST", body});
     S.cards = S.cards.filter(x=>x!==c); renderCards();
     toast(t("subbed"));
-  }catch(e){ toast(e.message,true); }
+    return true;
+  }catch(e){ toast(e.message,true); return false; }
 }
 
 /* ------------------------------------------------------------------ jobs */
@@ -344,7 +380,7 @@ function jobHTML(j){
   }
   if (j.status==="done") bar = `<div class="bar ok"><i data-w="100"></i></div>`;
   const err = j.error && j.status!=="done" ? errHTML(j.error)
-    : j.note ? `<div class="stats">${esc(t("note_"+j.note))}</div>` : "";
+    : j.note ? `<div class="stats">${esc(t("note_"+j.note, {n: j.marked}))}</div>` : "";
 
   const files = j.file_names||[];
   let actions = "";
@@ -472,7 +508,8 @@ document.addEventListener("keydown", e => {
     return;
   }
   if (e.key!=="Escape") return;
-  if (!$("#dirRoot").classList.contains("hidden")) dirClose();
+  if (!$("#subRoot").classList.contains("hidden")) closeSubDialog();
+  else if (!$("#dirRoot").classList.contains("hidden")) dirClose();
   else if (!$("#browseRoot").classList.contains("hidden")) closeBrowse(); else if (settingsOpen()) closeDrawer(); });
 
 /* --------------------------------------------------------------- archive */
@@ -653,7 +690,8 @@ function subRow(x){
   if (x.running) state = `<span class="okc">${esc(t("sub_running"))}…</span>`;
   else if (x.paused) state = esc(t("sub_paused"));
   else if (!x.last_check) state = esc(t("sub_never"));
-  else state = esc(t("sub_checked",{t:ago(x.last_check)})) + " · " + (x.last_error ? `<span class="bad">${esc(x.last_error)}</span>` : esc(x.last_new ? t("sub_new",{n:x.last_new}) : t("sub_nonew")));
+  else state = esc(t("sub_checked",{t:ago(x.last_check)})) + " · " + (x.last_error ? `<span class="bad">${esc(x.last_error)}</span>`
+    : esc(x.last_marked ? t("sub_marked",{n:x.last_marked}) : x.last_new ? t("sub_new",{n:x.last_new}) : t("sub_nonew")));
   const meta = [esc(x.host), `<span class="eng ${x.engine==="gallery-dl"?"g":"y"}">${esc(x.engine||"auto")}</span>`,
     prof && esc(x.opts.sections.map(s=>t("sec_"+s)).join(", ")), state,
     !x.paused && !x.running && x.next && esc(t("sub_next",{t:inT(x.next)})), x.total_new && esc(t("sub_total",{n:x.total_new}))].filter(Boolean).join(" · ");
@@ -662,7 +700,7 @@ function subRow(x){
     <div class="ic">${thumb}</div>
     <div class="nm"><b title="${esc(x.url)}">${esc(x.title)}</b><span>${meta}</span></div>
     <div class="acts">
-      ${sel("interval_h", SB.intervals, x.interval_h, h=>t("sub_every",{h:hoursLabel(h)}))}
+      ${sel("interval_h", SB.intervals, x.interval_h, intervalLabel)}
       ${sel("limit", SB.limits, x.opts.limit, n=>t("sub_last",{n}))}
       <button class="iconbtn" data-sb="check" title="${esc(t("sub_check"))}" ${x.running||x.paused?"disabled":""}>${icon("i-retry")}</button>
       <button class="iconbtn" data-sb="pause" title="${esc(t(x.paused?"sub_resume":"sub_pause"))}">${icon(x.paused?"i-play":"i-stop")}</button>
