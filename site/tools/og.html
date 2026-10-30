@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>İndirgen social card</title>
+<!-- Rendered at 1200×630 by `node capture.mjs og` into ../assets/og-image.png -->
+<style>
+  :root{--bg:#0f1115;--line:#2a2f3b;--text:#e8eaef;--muted:#9aa1b3;--accent:#e3a34a;--sans:system-ui,-apple-system,"Segoe UI",Roboto,Ubuntu,"Noto Sans",sans-serif}
+  html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:var(--bg);color:var(--text);font-family:var(--sans)}
+  .card{position:relative;height:100%;display:grid;grid-template-columns:44px 1fr;column-gap:34px;padding:58px 0 0 72px}
+  .mark{display:flex;flex-direction:column;align-items:center;gap:22px;height:500px}
+  .mark::before{content:"";width:44px;height:44px;border-radius:50%;background:var(--accent);margin-top:24px}
+  .mark::after{content:"";flex:1;width:22px;background:var(--accent);clip-path:polygon(0 0,100% 0,100% calc(100% - 38px),calc(100% + 16px) calc(100% - 38px),50% 100%,-16px calc(100% - 38px),0 calc(100% - 38px))}
+  h1{margin:0;font-size:92px;line-height:.95;font-weight:800;letter-spacing:-.035em}
+  h1 span{display:block;color:var(--muted);font-size:52px;letter-spacing:-.025em;margin-top:22px;font-weight:750}
+  p{margin:30px 0 0;font-size:25px;line-height:1.4;color:var(--muted);max-width:450px}
+  b{color:var(--text);font-weight:700}
+  img{position:absolute;left:648px;top:150px;width:720px;border:1px solid var(--line);border-radius:14px;box-shadow:0 30px 70px -20px #000}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="mark"></div>
+  <div>
+    <h1>Paste,<br>download.<span lang="tr">Yapıştır, indir.</span></h1>
+    <p><b>İndirgen</b>: a self-hosted media downloader for yt&#8209;dlp and gallery&#8209;dl.</p>
+  </div>
+  <img src="../assets/shots/downloads-en-dark.webp" alt="">
+</div>
+</body>
+</html>

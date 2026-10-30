@@ -1,0 +1,301 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İndirgen: paste, download</title>
+<meta name="description" content="A self-hosted media downloader: yt-dlp and gallery-dl behind one web interface, engines kept up to date, one Go binary, no account, no telemetry.">
+<link rel="canonical" href="https://yfthcn.github.io/indirgen/">
+<link rel="alternate" hreflang="en" href="https://yfthcn.github.io/indirgen/?lang=en">
+<link rel="alternate" hreflang="tr" href="https://yfthcn.github.io/indirgen/?lang=tr">
+<link rel="alternate" hreflang="x-default" href="https://yfthcn.github.io/indirgen/">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0f1115" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f5f3ef" media="(prefers-color-scheme: light)">
+<link rel="icon" href="assets/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="İndirgen">
+<meta property="og:url" content="https://yfthcn.github.io/indirgen/">
+<meta property="og:title" content="İndirgen: paste, download">
+<meta property="og:description" content="A self-hosted media downloader: yt-dlp and gallery-dl behind one web interface. One Go binary, no account, no telemetry.">
+<meta property="og:image" content="https://yfthcn.github.io/indirgen/assets/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="İndirgen's download list with Blender open movies, next to the words Paste, download.">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="tr_TR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="İndirgen: paste, download">
+<meta name="twitter:description" content="A self-hosted media downloader: yt-dlp and gallery-dl behind one web interface. One Go binary, no account, no telemetry.">
+<meta name="twitter:image" content="https://yfthcn.github.io/indirgen/assets/og-image.png">
+<meta name="twitter:image:alt" content="İndirgen's download list with Blender open movies, next to the words Paste, download.">
+
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/boot.js"></script>
+<script type="module" src="assets/site.js"></script>
+</head>
+<body>
+<a class="skip" href="#main" data-i18n="skip">Skip to content</a>
+
+<svg width="0" height="0" class="sprite" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 64 64"><circle cx="32" cy="12" r="6.5"/><path d="M26 24h12v16h9.5L32 57 16.5 40H26z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></symbol>
+  <symbol id="i-dl" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 19h16"/></symbol>
+  <symbol id="i-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8.5"/><path d="M12 3.5a8.5 8.5 0 0 1 0 17z" fill="currentColor"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4"/></symbol>
+  <symbol id="i-gh" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="bar">
+    <a class="brand" href="#top" aria-label="İndirgen"><svg aria-hidden="true"><use href="#logo"/></svg><span>İndirgen</span></a>
+    <nav class="nav" aria-label="Sections" data-i18n-attr="aria-label:nav.label">
+      <a href="#features" data-i18n="nav.features">Features</a>
+      <a href="#phone" data-i18n="nav.phone">Phone</a>
+      <a href="#install" data-i18n="nav.install">Install</a>
+      <a href="#privacy" data-i18n="nav.privacy">Privacy</a>
+      <a href="#faq" data-i18n="nav.faq">FAQ</a>
+    </nav>
+    <div class="prefs js-only">
+      <div class="seg" role="group" aria-label="Language" data-i18n-attr="aria-label:prefs.lang" id="langSeg">
+        <button type="button" data-lang="tr" lang="tr" aria-label="Türkçe">TR</button>
+        <button type="button" data-lang="en" lang="en" aria-label="English">EN</button>
+      </div>
+      <div class="seg" role="group" aria-label="Theme" data-i18n-attr="aria-label:prefs.theme" id="themeSeg">
+        <button type="button" data-theme="auto" aria-label="Same as the system" title="Same as the system" data-i18n-attr="aria-label:prefs.auto;title:prefs.auto"><svg aria-hidden="true"><use href="#i-auto"/></svg></button>
+        <button type="button" data-theme="dark" aria-label="Dark" title="Dark" data-i18n-attr="aria-label:prefs.dark;title:prefs.dark"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
+        <button type="button" data-theme="light" aria-label="Light" title="Light" data-i18n-attr="aria-label:prefs.light;title:prefs.light"><svg aria-hidden="true"><use href="#i-sun"/></svg></button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <section class="hero" id="top" aria-labelledby="hero-title">
+    <div class="mark" aria-hidden="true"></div>
+    <div class="hero-text">
+      <h1 id="hero-title"><span data-i18n="hero.paste">Paste,</span> <span class="drop"><span data-i18n="hero.download">download.</span></span></h1>
+      <p class="lead" data-i18n="hero.lead">İndirgen is a media downloader you run on your own computer. Paste links from YouTube and the other sites yt‑dlp and gallery‑dl support: it shows what they are, downloads them in the quality you pick and files everything in one archive. One Go binary that keeps its engines up to date, with no account and no telemetry.</p>
+      <div class="cta">
+        <a class="btn primary" href="#install"><svg aria-hidden="true"><use href="#i-dl"/></svg><span data-i18n="hero.get">Download</span></a>
+        <a class="btn" href="https://github.com/yfthcn/indirgen"><svg aria-hidden="true"><use href="#i-gh"/></svg><span data-i18n="hero.source">Source on GitHub</span></a>
+      </div>
+      <p class="fine" data-i18n="hero.fine">Free and open source under the MIT license. Linux (amd64, arm64) and Docker.</p>
+    </div>
+    <figure class="hero-shot">
+      <picture data-shot="downloads">
+        <source media="(prefers-color-scheme: light)" srcset="assets/shots/downloads-en-light.webp">
+        <img src="assets/shots/downloads-en-dark.webp" width="1600" height="1000" fetchpriority="high"
+          alt="The download list: Tears of Steel downloading at 19 percent with its speed and time left, Sintel, Big Buck Bunny and other Blender open movies finished below."
+          data-i18n-attr="alt:shot.downloads">
+      </picture>
+    </figure>
+  </section>
+
+  <section class="band" id="tour" aria-labelledby="tour-title">
+    <h2 id="tour-title" data-i18n="tour.title">A look inside</h2>
+    <p class="intro" data-i18n="tour.intro">The same interface on the computer and on the phone, in dark and light, in Turkish and English. The screenshots follow this page's language and theme.</p>
+    <div class="gallery">
+      <figure>
+        <a href="assets/shots/inspect-en-dark.webp" class="shot-link">
+          <picture data-shot="inspect">
+            <source media="(prefers-color-scheme: light)" srcset="assets/shots/inspect-en-light.webp">
+            <img src="assets/shots/inspect-en-dark.webp" width="1600" height="1000" loading="lazy" decoding="async"
+              alt="A pasted link to Cosmos Laundromat, inspected: thumbnail, length, channel and engine, with Video, Compatible, MP3 and Audio, a quality menu and a Download button."
+              data-i18n-attr="alt:shot.inspect">
+          </picture>
+        </a>
+        <figcaption><b data-i18n="tour.inspect.t">Look before you download</b> <span data-i18n="tour.inspect.d">Paste a link and see what it is: title, length, engine. Pick video or audio, and the quality.</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/shots/archive-en-dark.webp" class="shot-link">
+          <picture data-shot="archive">
+            <source media="(prefers-color-scheme: light)" srcset="assets/shots/archive-en-light.webp">
+            <img src="assets/shots/archive-en-dark.webp" width="1600" height="1000" loading="lazy" decoding="async"
+              alt="The archive as one list of eight films with size, age and folder, and buttons to play, download and delete each."
+              data-i18n-attr="alt:shot.archive">
+          </picture>
+        </a>
+        <figcaption><b data-i18n="tour.archive.t">Archive</b> <span data-i18n="tour.archive.d">Everything you downloaded, in folders by site and channel or as one list. Search, sort, ZIP a folder, delete.</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/shots/preview-en-dark.webp" class="shot-link">
+          <picture data-shot="preview">
+            <source media="(prefers-color-scheme: light)" srcset="assets/shots/preview-en-light.webp">
+            <img src="assets/shots/preview-en-dark.webp" width="1600" height="1000" loading="lazy" decoding="async"
+              alt="Big Buck Bunny playing in the browser's preview window, paused in a sunny meadow."
+              data-i18n-attr="alt:shot.preview">
+          </picture>
+        </a>
+        <figcaption><b data-i18n="tour.preview.t">Preview</b> <span data-i18n="tour.preview.d">Play videos and music and look at images in the browser; the arrow keys step through the folder.</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/shots/engines-en-dark.webp" class="shot-link">
+          <picture data-shot="engines">
+            <source media="(prefers-color-scheme: light)" srcset="assets/shots/engines-en-light.webp">
+            <img src="assets/shots/engines-en-dark.webp" width="1600" height="1000" loading="lazy" decoding="async"
+              alt="Settings, Engines: yt‑dlp, gallery‑dl, ffmpeg and deno, each managed and SHA-256 verified, with a Stable and Nightly switch for yt‑dlp."
+              data-i18n-attr="alt:shot.engines">
+          </picture>
+        </a>
+        <figcaption><b data-i18n="tour.engines.t">Engines</b> <span data-i18n="tour.engines.d">yt‑dlp, gallery‑dl, ffmpeg and Deno install themselves and follow the latest stable release, each SHA-256 checked and test-run first.</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/shots/pairing-en-dark.webp" class="shot-link">
+          <picture data-shot="pairing">
+            <source media="(prefers-color-scheme: light)" srcset="assets/shots/pairing-en-light.webp">
+            <img src="assets/shots/pairing-en-dark.webp" width="1600" height="1000" loading="lazy" decoding="async"
+              alt="Settings, Phone and extension: network access on, a QR code with its one-time link to an example address, the short code K7QM-3XRP and its remaining time."
+              data-i18n-attr="alt:shot.pairing">
+          </picture>
+        </a>
+        <figcaption><b data-i18n="tour.pairing.t">Connect a phone</b> <span data-i18n="tour.pairing.d">A QR code or an 8-character code signs the phone in, without typing the token. Each works once, for five minutes.</span></figcaption>
+      </figure>
+      <figure>
+        <a href="assets/shots/devices-en-dark.webp" class="shot-link">
+          <picture data-shot="devices">
+            <source media="(prefers-color-scheme: light)" srcset="assets/shots/devices-en-light.webp">
+            <img src="assets/shots/devices-en-dark.webp" width="1600" height="1000" loading="lazy" decoding="async"
+              alt="Connected devices: an iPhone with Safari and an Android phone with Chrome signed in by QR code, a Windows computer with Edge by token, each with a Sign out button."
+              data-i18n-attr="alt:shot.devices">
+          </picture>
+        </a>
+        <figcaption><b data-i18n="tour.devices.t">Connected devices</b> <span data-i18n="tour.devices.d">Every signed-in browser is listed with how and when it last connected. Sign out one, or all the others at once.</span></figcaption>
+      </figure>
+    </div>
+    <p class="credit" data-i18n-html="tour.credit">The films in the screenshots are Blender Foundation open movies (<a href="https://creativecommons.org/licenses/by/4.0/">CC BY</a>), <a href="https://studio.blender.org/films/">studio.blender.org</a>. Addresses and devices are examples.</p>
+  </section>
+
+  <section class="band" id="features" aria-labelledby="features-title">
+    <h2 id="features-title" data-i18n="features.title">What it does</h2>
+    <dl class="facts">
+      <div><dt data-i18n="f.media.t">Videos, music, galleries, playlists</dt><dd data-i18n="f.media.d">From the sites yt‑dlp and gallery‑dl support. İndirgen picks the engine and falls back to the other one; you can also choose.</dd></div>
+      <div><dt data-i18n="f.queue.t">A live queue</dt><dd data-i18n="f.queue.d">Progress, speed and time left. Parallel downloads per site, retries, and a queue that survives restarts.</dd></div>
+      <div><dt data-i18n="f.dupe.t">Already downloaded?</dt><dd data-i18n="f.dupe.d">Recognised before it downloads the same thing again.</dd></div>
+      <div><dt data-i18n="f.subs.t">Subscriptions</dt><dd data-i18n="f.subs.d">Channels, playlists, profiles and galleries checked on a schedule. Only what is new is fetched.</dd></div>
+      <div><dt data-i18n="f.ig.t">Instagram profiles</dt><dd data-i18n="f.ig.d">Pick sections, such as posts, reels, stories or highlights, or browse and hand-pick posts.</dd></div>
+      <div><dt data-i18n="f.login.t">Logins</dt><dd data-i18n="f.login.d">Your Firefox logins used directly, or an imported cookies.txt, kept one file per site.</dd></div>
+      <div><dt data-i18n="f.night.t">Limits and night hours</dt><dd data-i18n="f.night.d">A speed limit, downloads that wait for the night, and a guard that pauses new downloads when the disk is nearly full.</dd></div>
+      <div><dt data-i18n="f.ext.t">Browser extension</dt><dd data-i18n="f.ext.d">Chrome, Edge and Firefox: a toolbar button, a context menu entry and Alt+Shift+I send the page to İndirgen.</dd></div>
+      <div><dt data-i18n="f.update.t">Updates and backups</dt><dd data-i18n="f.update.d">New releases are checked against SHA256SUMS before they replace the old one. Settings, subscriptions and records go into one backup ZIP.</dd></div>
+    </dl>
+  </section>
+
+  <section class="band phone" id="phone" aria-labelledby="phone-title">
+    <div class="phone-text">
+      <h2 id="phone-title" data-i18n="phone.title">From your phone</h2>
+      <p class="intro" data-i18n="phone.intro">Turn on network access in Settings → Phone and extension, and the phone reaches İndirgen over your Wi-Fi or VPN.</p>
+      <dl class="facts one">
+        <div><dt data-i18n="p.pair.t">QR code or short code</dt><dd data-i18n="p.pair.d">Connect a phone shows a QR code for the camera and an 8-character code to type. Either signs the phone in; no token to copy.</dd></div>
+        <div><dt data-i18n="p.app.t">Home-screen app</dt><dd data-i18n="p.app.d">Add İndirgen to the home screen and it opens like an app. On Android it also shows up in the share menu.</dd></div>
+        <div><dt data-i18n="p.shortcut.t">iPhone Shortcuts</dt><dd data-i18n="p.shortcut.d">“Send to İndirgen” from the share sheet, and “Download to phone”, which saves the finished video to Photos.</dd></div>
+        <div><dt data-i18n="p.tg.t">Telegram</dt><dd data-i18n="p.tg.d">Send a link to your own bot from any app. It answers when the download is done and sends files up to 50 MB.</dd></div>
+      </dl>
+    </div>
+    <div class="phones">
+      <figure>
+        <picture data-shot="phone-downloads">
+          <source media="(prefers-color-scheme: light)" srcset="assets/shots/phone-downloads-en-light.webp">
+          <img src="assets/shots/phone-downloads-en-dark.webp" width="780" height="1688" loading="lazy" decoding="async"
+            alt="İndirgen on a phone: the download list with Tears of Steel in progress and finished films below."
+            data-i18n-attr="alt:shot.phoneDownloads">
+        </picture>
+      </figure>
+      <figure>
+        <picture data-shot="phone-archive">
+          <source media="(prefers-color-scheme: light)" srcset="assets/shots/phone-archive-en-light.webp">
+          <img src="assets/shots/phone-archive-en-dark.webp" width="780" height="1688" loading="lazy" decoding="async"
+            alt="İndirgen on a phone: the archive with search, sorting and eight films, each with play, download and delete buttons."
+            data-i18n-attr="alt:shot.phoneArchive">
+        </picture>
+      </figure>
+    </div>
+  </section>
+
+  <section class="band" id="install" aria-labelledby="install-title">
+    <h2 id="install-title" data-i18n="install.title">Install</h2>
+    <div class="tabs js-only" role="tablist" aria-labelledby="install-title">
+      <button type="button" role="tab" id="tab-linux" aria-controls="panel-linux" aria-selected="true" data-i18n="install.linux">Linux</button>
+      <button type="button" role="tab" id="tab-docker" aria-controls="panel-docker" aria-selected="false" tabindex="-1" data-i18n="install.docker">Docker</button>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-linux" aria-labelledby="tab-linux">
+      <h3 class="nojs-only" data-i18n="install.linux">Linux</h3>
+      <div class="code">
+        <pre><code>curl -fsSL https://github.com/yfthcn/indirgen/releases/latest/download/install.sh | sh</code></pre>
+        <button type="button" class="copy js-only" data-i18n-attr="aria-label:copy.label" aria-label="Copy the command"><svg aria-hidden="true"><use href="#i-copy"/></svg><span data-i18n="copy.btn">Copy</span></button>
+      </div>
+      <p data-i18n-html="install.linux.d">The script downloads the binary for your machine, checks it against the release's <code>SHA256SUMS</code> and installs a systemd user service that starts at boot. No <code>sudo</code>, nothing outside your home folder. Then open <a href="http://127.0.0.1:8899">http://127.0.0.1:8899</a>.</p>
+    </div>
+    <div class="panel" role="tabpanel" id="panel-docker" aria-labelledby="tab-docker">
+      <h3 class="nojs-only" data-i18n="install.docker">Docker</h3>
+      <div class="code">
+        <pre><code>mkdir indirgen &amp;&amp; cd indirgen
+curl -fsSLO https://raw.githubusercontent.com/yfthcn/indirgen/main/compose.yaml
+curl -fsSL  https://raw.githubusercontent.com/yfthcn/indirgen/main/.env.example -o .env
+mkdir -p data downloads
+docker compose up -d
+docker compose exec indirgen indirgen token</code></pre>
+        <button type="button" class="copy js-only" data-i18n-attr="aria-label:copy.labelAll" aria-label="Copy the commands"><svg aria-hidden="true"><use href="#i-copy"/></svg><span data-i18n="copy.btn">Copy</span></button>
+      </div>
+      <p data-i18n-html="install.docker.d">Open <code>http://127.0.0.1:8899</code> on the server and enter the token the last command prints. Images for amd64 and arm64; the engines download into <code>./data</code> and update themselves there.</p>
+    </div>
+    <p class="after" data-i18n-html="install.after">To remove it: <code>indirgen uninstall</code>, with <code>-purge</code> to delete the settings too. Downloaded files are never deleted. More in the <a href="https://github.com/yfthcn/indirgen#readme">README</a>.</p>
+    <p class="sr-only" role="status" id="copyStatus"></p>
+  </section>
+
+  <section class="band" id="privacy" aria-labelledby="privacy-title">
+    <h2 id="privacy-title" data-i18n="privacy.title">Security and privacy</h2>
+    <dl class="facts">
+      <div><dt data-i18n="s.local.t">It runs on your computer</dt><dd data-i18n="s.local.d">It listens on 127.0.0.1 only, until you turn on network access for the phone. Other devices then need the token, and you can sign each one out.</dd></div>
+      <div><dt data-i18n="s.none.t">No account, no telemetry</dt><dd data-i18n="s.none.d">Besides the sites you download from, it only talks to GitHub and Codeberg for updates, and to Telegram if you set up the bot.</dd></div>
+      <div class="warn"><dt data-i18n="s.net.t">Do not put it on the internet</dt><dd data-i18n="s.net.d">Use it on your home network or over a VPN such as WireGuard or Tailscale. Anything wider needs a reverse proxy with its own sign-in.</dd></div>
+    </dl>
+  </section>
+
+  <section class="band" id="faq" aria-labelledby="faq-title">
+    <h2 id="faq-title" data-i18n="faq.title">Questions</h2>
+    <div class="faq">
+      <details>
+        <summary data-i18n="q.free.q">Does it cost anything?</summary>
+        <p data-i18n="q.free.a">No. İndirgen is open source under the MIT license, and it needs no account or subscription.</p>
+      </details>
+      <details>
+        <summary data-i18n="q.sites.q">Which sites does it work with?</summary>
+        <p data-i18n="q.sites.a">The ones yt‑dlp and gallery‑dl support: YouTube and many other video, music and image sites. İndirgen keeps both engines on their latest stable release.</p>
+      </details>
+      <details>
+        <summary data-i18n="q.os.q">Does it run on Windows or macOS?</summary>
+        <p data-i18n="q.os.a">It is made for Linux (amd64, arm64) and Docker. macOS builds and runs, but the installer sets up the service only on Linux. Windows is not supported.</p>
+      </details>
+      <details>
+        <summary data-i18n="q.yt.q">YouTube stopped working. What now?</summary>
+        <p data-i18n-html="q.yt.a">Settings → Engines → yt‑dlp → <b>Nightly</b>. Fixes for site changes reach yt‑dlp's nightly builds days before a stable release. Switch back to <b>Stable</b> later.</p>
+      </details>
+      <details>
+        <summary data-i18n="q.files.q">Where do the files go?</summary>
+        <p data-i18n-html="q.files.a">Into <code>~/Downloads/İndirgen</code>, in folders by site and channel; Settings → Archive folder changes that. With Docker, into <code>./downloads</code>.</p>
+      </details>
+      <details>
+        <summary data-i18n="q.update.q">How do I update it?</summary>
+        <p data-i18n-html="q.update.a">Settings → About shows new releases and installs them; from a terminal, <code>indirgen update</code>. Docker: <code>docker compose pull &amp;&amp; docker compose up -d</code>.</p>
+      </details>
+      <details>
+        <summary data-i18n="q.legal.q">Is downloading allowed?</summary>
+        <p data-i18n="q.legal.a">İndirgen is a tool for media you are allowed to download. Respect copyright and the terms of the sites you use it with.</p>
+      </details>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="bar">
+    <span class="brand small"><svg aria-hidden="true"><use href="#logo"/></svg><span>İndirgen</span></span>
+    <p data-i18n-html="foot.text">MIT licensed. Made by <a href="https://kaktusdev.net">kaktusdev.net</a>.</p>
+    <a href="https://github.com/yfthcn/indirgen">GitHub</a>
+  </div>
+</footer>
+</body>
+</html>
