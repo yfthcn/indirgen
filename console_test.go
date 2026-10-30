@@ -45,7 +45,6 @@ func TestEngineInstallable(t *testing.T) {
 		{"linux", "amd64", "managed", map[string]bool{"yt-dlp": true, "gallery-dl": true, "ffmpeg": true, "deno": true}},
 		{"linux", "amd64", "system", map[string]bool{"ffmpeg": false, "yt-dlp": true}},
 		{"linux", "arm64", "managed", map[string]bool{"gallery-dl": false, "ffmpeg": true, "yt-dlp": true}}, // no gallery-dl build
-		{"darwin", "arm64", "managed", map[string]bool{"ffmpeg": false, "gallery-dl": false, "deno": true}},
 	} {
 		m.goos, m.goarch, cfg.FFmpeg = c.goos, c.goarch, c.ffmpeg
 		for name, want := range c.want {

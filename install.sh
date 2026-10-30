@@ -28,7 +28,7 @@ die() { printf '  indirgen kurulumu: %s\n' "$*" >&2; exit 1; }
 
 case "$(uname -s)" in
   Linux) os=linux ;;
-  Darwin) os=darwin ;;
+  Darwin) die "Bu sistemde yerel kurulum yok, Docker kullan: https://github.com/yfthcn/indirgen#windows-and-macos-docker-desktop" ;;
   *) die "desteklenmeyen sistem: $(uname -s)" ;;
 esac
 case "$(uname -m)" in
@@ -38,7 +38,7 @@ case "$(uname -m)" in
 esac
 asset="indirgen-$os-$arch"
 case "$asset" in
-  indirgen-linux-amd64 | indirgen-linux-arm64 | indirgen-darwin-arm64) ;;
+  indirgen-linux-amd64 | indirgen-linux-arm64) ;;
   *) die "bu sistem için hazır sürüm yok ($os/$arch): kaynaktan derle (README → From source)" ;;
 esac
 

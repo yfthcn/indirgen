@@ -10,7 +10,6 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
-	"runtime"
 	"strings"
 	"sync"
 )
@@ -166,9 +165,6 @@ func defaultDataDir() string {
 		return v
 	}
 	home, _ := os.UserHomeDir()
-	if runtime.GOOS == "darwin" {
-		return filepath.Join(home, "Library", "Application Support", "indirgen")
-	}
 	if v := os.Getenv("XDG_DATA_HOME"); v != "" {
 		return filepath.Join(v, "indirgen")
 	}

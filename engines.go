@@ -136,10 +136,8 @@ var engineSpecs = []EngineSpec{
 		VersionArgs: []string{"--version"}, Required: true,
 		Choose: func(rel *ghRelease, goos, goarch string) (pick, error) {
 			a, err := rel.platformAsset(map[string]string{
-				"linux/amd64":  "yt-dlp_linux",
-				"linux/arm64":  "yt-dlp_linux_aarch64",
-				"darwin/amd64": "yt-dlp_macos",
-				"darwin/arm64": "yt-dlp_macos",
+				"linux/amd64": "yt-dlp_linux",
+				"linux/arm64": "yt-dlp_linux_aarch64",
 			}, goos, goarch)
 			if err != nil {
 				return pick{}, err
@@ -211,10 +209,8 @@ var engineSpecs = []EngineSpec{
 		VersionArgs: []string{"--version"}, Required: false,
 		Choose: func(rel *ghRelease, goos, goarch string) (pick, error) {
 			a, err := rel.platformAsset(map[string]string{
-				"linux/amd64":  "deno-x86_64-unknown-linux-gnu.zip",
-				"linux/arm64":  "deno-aarch64-unknown-linux-gnu.zip",
-				"darwin/amd64": "deno-x86_64-apple-darwin.zip",
-				"darwin/arm64": "deno-aarch64-apple-darwin.zip",
+				"linux/amd64": "deno-x86_64-unknown-linux-gnu.zip",
+				"linux/arm64": "deno-aarch64-unknown-linux-gnu.zip",
 			}, goos, goarch)
 			if err != nil {
 				return pick{}, err

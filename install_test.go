@@ -4,6 +4,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"testing"
 )
@@ -231,4 +232,28 @@ func TestPurgeDataKeepsArchive(t *testing.T) {
 			t.Fatalf("kept=%q err=%v exists=%v", kept, err, has(data, ""))
 		}
 	})
+}
+
+// install.sh on a Mac: no native install, it points to Docker and stops
+// before downloading anything.
+func TestInstallScriptOnMacPointsToDocker(t *testing.T) {
+	if runtime.GOOS != "linux" {
+		t.Skip("runs install.sh with a fake uname")
+	}
+	bin := t.TempDir()
+	os.WriteFile(filepath.Join(bin, "uname"), []byte("#!/bin/sh\n[ \"$1\" = -m ] && echo arm64 || echo Darwin\n"), 0o755)
+	// curl and wget fail loudly: the script must not get that far
+	for _, n := range []string{"curl", "wget"} {
+		os.WriteFile(filepath.Join(bin, n), []byte("#!/bin/sh\necho DOWNLOADED >&2\nexit 1\n"), 0o755)
+	}
+	cmd := exec.Command("sh", "install.sh")
+	cmd.Env = append(os.Environ(), "PATH="+bin+":/usr/bin:/bin", "HOME="+t.TempDir())
+	out, err := cmd.CombinedOutput()
+	if err == nil {
+		t.Fatalf("install.sh went on on a Mac:\n%s", out)
+	}
+	s := string(out)
+	if !strings.Contains(s, "Docker") || !strings.Contains(s, "https://github.com/yfthcn/indirgen#windows-and-macos-docker-desktop") || strings.Contains(s, "DOWNLOADED") {
+		t.Fatalf("install.sh on a Mac said:\n%s", s)
+	}
 }

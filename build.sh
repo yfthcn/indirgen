@@ -14,8 +14,8 @@ LDFLAGS="$LDFLAGS -X main.buildDate=$(date -u +%Y-%m-%d)"
 rm -rf dist && mkdir -p dist
 go vet ./...
 go test ./...
-# Linux first (desktop, server, Raspberry Pi); macOS as a bonus.
-for target in linux/amd64 linux/arm64 darwin/arm64; do
+# Linux only (desktop, server, Raspberry Pi); Windows and macOS use Docker.
+for target in linux/amd64 linux/arm64; do
   os="${target%/*}"; arch="${target#*/}"
   out="dist/indirgen-${os}-${arch}"
   CGO_ENABLED=0 GOOS="$os" GOARCH="$arch" go build -trimpath -ldflags "$LDFLAGS" -o "$out" .
