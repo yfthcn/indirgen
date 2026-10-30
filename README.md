@@ -2,6 +2,13 @@
 
 > Yapıştır, indir. — Paste, download.
 
+**Site:** [yfthcn.github.io/indirgen](https://yfthcn.github.io/indirgen/) ([Türkçe](https://yfthcn.github.io/indirgen/?lang=tr))
+
+<picture>
+  <source media="(prefers-color-scheme: light)" srcset="site/assets/shots/downloads-en-light.webp">
+  <img src="site/assets/shots/downloads-en-dark.webp" width="800" alt="İndirgen's download list: Tears of Steel downloading, other Blender open movies finished below.">
+</picture>
+
 A self-hosted media downloader for one person: **yt-dlp** and **gallery-dl** behind one web interface, with their engines (yt-dlp, gallery-dl, ffmpeg, Deno) installed and kept on the latest release automatically. One Go binary, no dependencies, no account, no telemetry.
 
 Use it from the browser on the computer it runs on, from your phone over Wi-Fi or a VPN, from a Telegram bot, an iPhone Shortcut or the browser extension.
