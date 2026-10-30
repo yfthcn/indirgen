@@ -24,3 +24,6 @@ indirgen-yedek-*.zip
 
 # Local editor and assistant settings
 .claude/settings.local.json
+
+# Site tools (site/tools/package-lock.json pins them)
+/site/tools/node_modules/

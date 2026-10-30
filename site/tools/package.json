@@ -1,0 +1,16 @@
+{
+  "name": "indirgen-site-tools",
+  "private": true,
+  "type": "module",
+  "description": "Screenshots, the social card and checks for the İndirgen site",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "seed": "node capture.mjs seed",
+    "shots": "node capture.mjs shots",
+    "og": "node capture.mjs og",
+    "check": "node check.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "1.64.1"
+  }
+}
