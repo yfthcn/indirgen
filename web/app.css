@@ -492,6 +492,8 @@ header,.sethead{padding-top:var(--safe-t)}
   .lrow .acts .iconbtn::after{content:"";position:absolute;inset:-7px} /* from inside the 1 px border: 6 px beyond it */
   .lrow:is([data-dir],[data-file]) .nm span{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .lrow:is([data-dir],[data-file]) .nm span i{margin:0 var(--sp-1)}
+  /* one line here, so the folder needs the separator the flex gap gives on a computer */
+  .lrow[data-file] .nm span code::before{content:"·";font:var(--fs-sm) var(--sans);color:var(--faint);margin:0 var(--sp-1)}
   /* The same for the add form, the list tabs, the filter chips and the
      settings bar: compact to the eye, a centred tap target of at least
      44 × 44 (not while a busy spinner owns ::after). */

@@ -2,7 +2,9 @@
 // - the theme buttons in the settings header are inline SVG icons of one
 //   size, each with a name (no font glyphs);
 // - a running download's figures stay on one line and keep the speed and
-//   the time left.
+//   the time left;
+// - an archive row (all files) separates the age from the folder with " · "
+//   on a phone, and stays as it was on the computer.
 // It needs a download in progress. With none running it starts Sintel (a
 // Blender open movie, CC BY) under a 1 MB/s limit, and at the end stops it
 // and puts the limit back.
@@ -29,6 +31,7 @@ for (const [w, phone] of [[1440, false], [390, true], [320, true]]) for (const l
   await ctx.addInitScript(l => {
     localStorage.setItem("indirgen.lang", JSON.stringify(l));
     localStorage.setItem("indirgen.view", JSON.stringify("jobs"));
+    localStorage.setItem("indirgen.libFlat", "true");
   }, lang);
   const p = await ctx.newPage();
   p.on("pageerror", e => add(`${name}: ${e.message}`));
@@ -49,6 +52,22 @@ for (const [w, phone] of [[1440, false], [390, true], [320, true]]) for (const l
   if (st.lines !== 1 || !keeps) add(`${name}: figures ${JSON.stringify(st)}`);
   await p.locator("#jobs .job").first().screenshot({ path: join(OUT, `job-${name}.png`) });
 
+  await p.click("#viewSeg [data-v=library]");
+  await p.waitForSelector(".lrow[data-file] .nm code");
+  const row = await p.evaluate(() => {
+    const code = document.querySelector(".lrow[data-file] .nm code"), span = code.parentElement;
+    const before = getComputedStyle(code, "::before").content;
+    // the text as shown: the separator, if any, comes from ::before
+    const sep = before && before !== "none" ? JSON.parse(before) : "";
+    const ageEnd = span.textContent.slice(0, span.textContent.indexOf(code.textContent));
+    const cs = getComputedStyle(code, "::before");
+    return { shown: `${ageEnd}${sep ? ` ${sep} ` : ""}${code.textContent}`, sep, margins: [cs.marginLeft, cs.marginRight], display: getComputedStyle(span).display };
+  });
+  if (phone && (row.sep !== "·" || row.margins.some(m => !parseFloat(m)))) add(`${name}: archive row ${JSON.stringify(row)}`);
+  if (!phone && (row.sep || row.display !== "flex")) add(`${name}: archive row changed on the computer ${JSON.stringify(row)}`);
+  await p.locator(".lrow[data-file]").first().screenshot({ path: join(OUT, `archive-row-${name}.png`) });
+  await p.click("#viewSeg [data-v=jobs]");
+
   await p.click("#settingsBtn");
   await p.waitForTimeout(400);
   const buttons = await p.evaluate(() => [...document.querySelectorAll("#themeSeg button")].map(b => {
@@ -57,7 +76,7 @@ for (const [w, phone] of [[1440, false], [390, true], [320, true]]) for (const l
   }));
   if (buttons.some(x => !x.size || x.text || !x.name) || new Set(buttons.map(x => x.size)).size !== 1) add(`${name}: theme buttons ${JSON.stringify(buttons)}`);
   await p.locator(".sethead").screenshot({ path: join(OUT, `themeseg-${name}.png`) });
-  console.log(name, `${st.lines} line: ${st.shown.join(" · ")} | ${buttons.map(x => x.name).join(", ")}`);
+  console.log(name, `${st.lines} line: ${st.shown.join(" · ")} | ${buttons.map(x => x.name).join(", ")} | ${row.shown}`);
   await ctx.close();
 }
 await b.close();
