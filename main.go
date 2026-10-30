@@ -23,7 +23,7 @@ import (
 )
 
 // version is the release number; build.sh overrides it from the git tag.
-var version = "1.0.0"
+var version = "1.0.1"
 
 func usage() {
 	fmt.Fprint(os.Stderr, `İndirgen — yapıştır, indir.
