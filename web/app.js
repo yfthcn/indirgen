@@ -14,6 +14,7 @@ function applyI18n(){
   document.documentElement.lang = lang;
   document.querySelectorAll("[data-t]").forEach(el => el.textContent = t(el.dataset.t));
   document.querySelectorAll("[data-tp]").forEach(el => el.placeholder = t(el.dataset.tp));
+  document.querySelectorAll("[data-ta]").forEach(el => { el.title = t(el.dataset.ta); el.setAttribute("aria-label", el.title); }); // icon-only buttons
   setSeg("#langSeg", lang);
 }
 
@@ -370,13 +371,13 @@ function jobHTML(j){
   if (j.status==="running" || j.status==="queued" && j.progress>0){
     const ind = j.progress<0 || (j.status==="running" && j.phase!=="downloading" && j.phase!=="processing");
     bar = `<div class="bar${ind?" ind":""}"><i data-w="${Math.max(2,Math.round((j.progress||0)*100))}"></i></div>`;
-    const s=[];
-    if (j.items>1 || isG) s.push(`${j.item||0}${j.items?"/"+j.items:""}`);
-    if (!isG && j.progress>=0) s.push(Math.round(j.progress*100)+"%");
-    if (j.total) s.push(`${fmtBytes(j.bytes)} / ${fmtBytes(j.total)}`);
-    if (j.speed) s.push(fmtBytes(j.speed)+"/s");
-    if (j.eta) s.push(fmtDur(j.eta));
-    stats = `<div class="stats">${s.map(esc).join("<span>·</span>")}</div>`;
+    const s=[]; // [kind, text]: on a narrow screen the speed and the time left stay, the rest gives way
+    if (j.items>1 || isG) s.push(["n", `${j.item||0}${j.items?"/"+j.items:""}`]);
+    if (!isG && j.progress>=0) s.push(["pct", Math.round(j.progress*100)+"%"]);
+    if (j.total) s.push(["bytes", `${fmtBytes(j.bytes)} / ${fmtBytes(j.total)}`]);
+    if (j.speed) s.push(["speed", fmtBytes(j.speed)+"/s"]);
+    if (j.eta) s.push(["eta", fmtDur(j.eta)]);
+    stats = `<div class="stats live">${s.map(([k,v])=>`<span class="st-${k}">${esc(v)}</span>`).join("")}</div>`;
   }
   if (j.status==="done") bar = `<div class="bar ok"><i data-w="100"></i></div>`;
   const err = j.error && j.status!=="done" ? errHTML(j.error)

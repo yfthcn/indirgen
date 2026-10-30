@@ -246,6 +246,17 @@ select.libin{width:auto;padding:var(--sp-1) var(--sp-2)}
 .bar.ind i{width:30%!important;position:absolute;animation:ind 1.3s ease-in-out infinite}
 @keyframes ind{from{left:-30%}to{left:100%}}
 .stats{font:var(--fs-xs) var(--mono);color:var(--muted);margin-top:var(--sp-1);display:flex;gap:var(--sp-3);flex-wrap:wrap}
+/* a running job's figures: each one brings its "·"; the line starts one
+   separator to the left and clips it, whichever figure comes first */
+.stats.live{column-gap:0;margin-left:-1.6em;clip-path:inset(0 0 0 1.6em)}
+.stats.live>span{white-space:nowrap}
+.stats.live>span::before{content:"·";display:inline-block;width:1.6em;text-align:center}
+@media (max-width:640px){
+  /* one line: what does not fit wraps out of sight, so the order is the priority */
+  .stats.live{max-height:1lh;overflow:hidden}
+  .st-speed{order:1} .st-eta{order:2} .st-pct{order:3} .st-n{order:4} .st-bytes{order:5}
+}
+#themeSeg svg{width:16px;height:16px;display:block}
 .actions{display:flex;gap:var(--sp-1);align-items:center}
 .details{grid-column:1/-1;border-top:1px dashed var(--line);margin-top:var(--sp-1);padding-top:var(--sp-2);font-size:var(--fs-sm);color:var(--muted);display:grid;gap:var(--sp-2)}
 .details code{font:var(--fs-xs) var(--mono);word-break:break-all;color:var(--text)}
