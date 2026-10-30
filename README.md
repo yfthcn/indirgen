@@ -64,6 +64,51 @@ Open `http://127.0.0.1:8899` on the server and enter the token. The image (`ghcr
 - On arm64 (Raspberry Pi) the image has no gallery-dl, because gallery-dl publishes a standalone binary only for amd64. Videos work; galleries and Instagram need amd64 or a native install with `pipx install gallery-dl`.
 - To build the image yourself from a clone, uncomment `build: .` in your `compose.override.yaml`.
 
+### Windows and macOS (Docker Desktop)
+
+İndirgen runs natively on Linux only. On Windows and macOS it runs in [Docker Desktop](https://www.docker.com/products/docker-desktop/), with the same image as on a server.
+
+> **Experimental:** this setup has not been tested on Windows or macOS.
+
+Windows (PowerShell):
+
+```powershell
+New-Item -ItemType Directory -Force indirgen | Out-Null; Set-Location indirgen
+curl.exe -fsSLO https://raw.githubusercontent.com/yfthcn/indirgen/main/compose.yaml
+curl.exe -fsSLO https://raw.githubusercontent.com/yfthcn/indirgen/main/.env.example
+Copy-Item .env.example .env
+New-Item -ItemType Directory -Force data, downloads | Out-Null
+docker compose up -d
+docker compose exec indirgen indirgen token
+```
+
+macOS (zsh):
+
+```sh
+mkdir indirgen && cd indirgen
+curl -fsSLO https://raw.githubusercontent.com/yfthcn/indirgen/main/compose.yaml
+curl -fsSLO https://raw.githubusercontent.com/yfthcn/indirgen/main/.env.example
+cp .env.example .env
+mkdir -p data downloads
+docker compose up -d
+docker compose exec indirgen indirgen token
+```
+
+Then open `http://127.0.0.1:8899` and enter the token. Set `TZ` in `.env` (for example `TZ=Europe/Istanbul`) so the night hours follow your clock.
+
+- **Start with the computer:** turn on "Start Docker Desktop when you sign in" in Docker Desktop's settings. The container restarts on its own once Docker Desktop runs.
+- **Logins:** the container cannot read your Firefox, so "Use the logins in Firefox" is not available. Import a `cookies.txt` instead (Settings → Cookies).
+- **From the phone:** set `INDIRGEN_BIND=0.0.0.0` in `.env`, run `docker compose up -d` again, and allow incoming connections to port 8899 in the system firewall (Windows Defender Firewall; on macOS, System Settings → Network → Firewall). Then open `http://<computer's IP>:8899` on the phone and sign in with the token. Use it on your home network or over a VPN, never directly on the internet.
+- **Apple Silicon:** the arm64 image has no gallery-dl (gallery-dl publishes a standalone binary only for amd64), so galleries and Instagram do not work with it. To use the amd64 image through Rosetta, turn on "Use Rosetta for x86_64/amd64 emulation on Apple Silicon" in Docker Desktop and create `compose.override.yaml` next to `compose.yaml`:
+
+  ```yaml
+  services:
+    indirgen:
+      platform: linux/amd64
+  ```
+
+  Then `docker compose pull && docker compose up -d`.
+
 ### From source
 
 ```sh
@@ -170,7 +215,7 @@ Command-line flags `-listen`, `-library` and `-data` apply to that run only. `GI
 
 ```sh
 go vet ./... && go test -race ./...
-./build.sh                         # binaries for linux/amd64, linux/arm64, darwin/arm64 + SHA256SUMS
+./build.sh                         # binaries for linux/amd64, linux/arm64 + SHA256SUMS
 ./extension/build.sh               # extension zips
 ```
 
@@ -178,7 +223,10 @@ Release: bump `version` in `main.go`, add `## x.y.z · date` to `CHANGELOG.md`, 
 
 ## Platforms
 
-Linux (amd64, arm64). macOS builds and runs, but `install` sets up the systemd service only on Linux. gallery-dl publishes a standalone binary only for linux/amd64; elsewhere İndirgen uses a `gallery-dl` on PATH (`pipx install gallery-dl`). Windows is not supported.
+- **Native install:** Linux only (amd64, arm64), as a systemd user service.
+- **Windows and macOS:** Docker Desktop, see [Windows and macOS (Docker Desktop)](#windows-and-macos-docker-desktop). Experimental, not tested there yet.
+
+gallery-dl publishes a standalone binary only for linux/amd64. On linux/arm64 İndirgen uses a `gallery-dl` on PATH (`pipx install gallery-dl`); the arm64 Docker image has none.
 
 ## Legal
 
@@ -191,6 +239,8 @@ MIT licensed (see `LICENSE`). İndirgen is a tool for downloading media you are 
 **Kurulum (Linux):** `curl -fsSL https://github.com/yfthcn/indirgen/releases/latest/download/install.sh | sh` sonra **http://127.0.0.1:8899**. `sudo` gerekmez; program `~/.local/bin`'e, kullanıcı servisi systemd'ye kurulur.
 
 **Docker:** `compose.yaml` ile `.env.example`'ı indir (`.env` olarak kaydet), `mkdir -p data downloads`, `docker compose up -d`; token için `docker compose exec indirgen indirgen token`.
+
+**Windows ve macOS:** yerel kurulum yok, Docker Desktop ile çalışır (PowerShell ve zsh komutları: "Windows and macOS (Docker Desktop)"). Firefox oturumları konteynerde kullanılamaz, `cookies.txt` içe aktar. Telefondan erişim için `.env`'de `INDIRGEN_BIND=0.0.0.0` yap ve güvenlik duvarında 8899 numaralı porta izin ver. Docker Desktop'ta "oturum açılınca başlat" açık olmalı. Apple Silicon'da arm64 imajında gallery-dl yok; galeriler için `compose.override.yaml`'a `platform: linux/amd64` ekle (Rosetta). Bu kurulum Windows ve macOS'ta test edilmedi (deneysel).
 
 **Kaldırma:** `indirgen uninstall` (ayarlar da silinsin dersen `-purge`). İndirilen dosyalara hiçbir zaman dokunulmaz.
 

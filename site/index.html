@@ -83,7 +83,7 @@
         <a class="btn primary" href="#install"><svg aria-hidden="true"><use href="#i-dl"/></svg><span data-i18n="hero.get">Download</span></a>
         <a class="btn" href="https://github.com/yfthcn/indirgen"><svg aria-hidden="true"><use href="#i-gh"/></svg><span data-i18n="hero.source">Source on GitHub</span></a>
       </div>
-      <p class="fine" data-i18n="hero.fine">Free and open source under the MIT license. Linux (amd64, arm64) and Docker.</p>
+      <p class="fine" data-i18n="hero.fine">Free and open source under the MIT license. Linux (amd64, arm64); Windows and macOS through Docker Desktop.</p>
     </div>
     <figure class="hero-shot">
       <picture data-shot="downloads">
@@ -240,7 +240,7 @@ docker compose up -d
 docker compose exec indirgen indirgen token</code></pre>
         <button type="button" class="copy js-only" data-i18n-attr="aria-label:copy.labelAll" aria-label="Copy the commands"><svg aria-hidden="true"><use href="#i-copy"/></svg><span data-i18n="copy.btn">Copy</span></button>
       </div>
-      <p data-i18n-html="install.docker.d">Open <code>http://127.0.0.1:8899</code> on the server and enter the token the last command prints. Images for amd64 and arm64; the engines download into <code>./data</code> and update themselves there.</p>
+      <p data-i18n-html="install.docker.d">Open <code>http://127.0.0.1:8899</code> on the server and enter the token the last command prints. Images for amd64 and arm64; the engines download into <code>./data</code> and update themselves there. On Windows and macOS this runs in Docker Desktop, with the commands in the <a href="https://github.com/yfthcn/indirgen#windows-and-macos-docker-desktop">README</a> (experimental).</p>
     </div>
     <p class="after" data-i18n-html="install.after">To remove it: <code>indirgen uninstall</code>, with <code>-purge</code> to delete the settings too. Downloaded files are never deleted. More in the <a href="https://github.com/yfthcn/indirgen#readme">README</a>.</p>
     <p class="sr-only" role="status" id="copyStatus"></p>
@@ -268,7 +268,7 @@ docker compose exec indirgen indirgen token</code></pre>
       </details>
       <details>
         <summary data-i18n="q.os.q">Does it run on Windows or macOS?</summary>
-        <p data-i18n="q.os.a">It is made for Linux (amd64, arm64) and Docker. macOS builds and runs, but the installer sets up the service only on Linux. Windows is not supported.</p>
+        <p data-i18n-html="q.os.a">Through Docker Desktop: the <a href="https://github.com/yfthcn/indirgen#windows-and-macos-docker-desktop">README</a> has the PowerShell and zsh commands. That setup is experimental, not tested on Windows or macOS yet. The native install is Linux only (amd64, arm64).</p>
       </details>
       <details>
         <summary data-i18n="q.yt.q">YouTube stopped working. What now?</summary>

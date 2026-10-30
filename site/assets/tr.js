@@ -21,7 +21,7 @@ export const tr = {
   "hero.lead": "İndirgen, kendi bilgisayarında çalıştırdığın bir medya indiricidir. YouTube'dan ve yt‑dlp ile gallery‑dl'in desteklediği diğer sitelerden bağlantı yapıştır: ne olduklarını gösterir, seçtiğin kalitede indirir ve hepsini tek bir arşivde toplar. Motorlarını kendisi güncel tutan tek bir Go programı; hesap yok, telemetri yok.",
   "hero.get": "İndir",
   "hero.source": "GitHub'da kaynak kod",
-  "hero.fine": "MIT lisanslı, özgür ve açık kaynak. Linux (amd64, arm64) ve Docker.",
+  "hero.fine": "MIT lisanslı, özgür ve açık kaynak. Linux (amd64, arm64); Windows ve macOS'ta Docker Desktop ile.",
 
   "shot.downloads": "İndirme listesi: Tears of Steel yüzde 19'da, hızı ve kalan süresiyle iniyor; altında Sintel, Big Buck Bunny ve diğer Blender açık filmleri bitmiş.",
   "shot.inspect": "Yapıştırılmış Cosmos Laundromat bağlantısı incelenmiş: küçük resim, süre, kanal ve motor; Video, Uyumlu, MP3 ve Ses seçenekleri, kalite menüsü ve İndir düğmesi.",
@@ -89,7 +89,7 @@ export const tr = {
   "copy.done": "Kopyalandı",
   "copy.failed": "Kopyalanamadı: metni seç",
   "install.linux.d": "Betik, makinene uygun programı indirir, sürümün <code>SHA256SUMS</code> dosyasıyla doğrular ve açılışta başlayan bir systemd kullanıcı servisi kurar. <code>sudo</code> gerekmez, ev klasörünün dışına hiçbir şey yazılmaz. Sonra <a href=\"http://127.0.0.1:8899\">http://127.0.0.1:8899</a> adresini aç.",
-  "install.docker.d": "Sunucuda <code>http://127.0.0.1:8899</code> adresini aç ve son komutun yazdığı token'ı gir. amd64 ve arm64 imajları var; motorlar <code>./data</code> klasörüne iner ve orada kendilerini günceller.",
+  "install.docker.d": "Sunucuda <code>http://127.0.0.1:8899</code> adresini aç ve son komutun yazdığı token'ı gir. amd64 ve arm64 imajları var; motorlar <code>./data</code> klasörüne iner ve orada kendilerini günceller. Windows ve macOS'ta bu adımlar Docker Desktop'ta çalışır, komutlar <a href=\"https://github.com/yfthcn/indirgen#windows-and-macos-docker-desktop\">README</a>'de (deneysel).",
   "install.after": "Kaldırmak için <code>indirgen uninstall</code>; ayarlar da silinsin dersen <code>-purge</code> ekle. İndirilen dosyalara hiçbir zaman dokunulmaz. Ayrıntılar <a href=\"https://github.com/yfthcn/indirgen#readme\">README</a>'de.",
 
   "privacy.title": "Güvenlik ve gizlilik",
@@ -106,7 +106,7 @@ export const tr = {
   "q.sites.q": "Hangi sitelerle çalışır?",
   "q.sites.a": "yt‑dlp ve gallery‑dl'in desteklediklerinin hepsiyle: YouTube ve daha birçok video, müzik ve görsel sitesi. İndirgen iki motoru da en son kararlı sürümde tutar.",
   "q.os.q": "Windows'ta ya da macOS'ta çalışır mı?",
-  "q.os.a": "Linux (amd64, arm64) ve Docker için yapıldı. macOS'ta derlenir ve çalışır, ama kurulum servisi yalnızca Linux'ta kurar. Windows desteklenmiyor.",
+  "q.os.a": "Docker Desktop ile: PowerShell ve zsh komutları <a href=\"https://github.com/yfthcn/indirgen#windows-and-macos-docker-desktop\">README</a>'de. Bu kurulum deneysel, Windows ve macOS'ta henüz test edilmedi. Yerel kurulum yalnızca Linux (amd64, arm64).",
   "q.yt.q": "YouTube çalışmayı bıraktı, ne yapmalı?",
   "q.yt.a": "Ayarlar → Motorlar → yt‑dlp → <b>Nightly</b>. Site değişikliklerine yönelik düzeltmeler yt‑dlp'nin nightly sürümlerine kararlı sürümden günler önce gelir. Sonra yeniden <b>Kararlı</b>'ya dön.",
   "q.files.q": "Dosyalar nereye iner?",
