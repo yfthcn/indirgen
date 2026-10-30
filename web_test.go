@@ -160,3 +160,29 @@ func TestWebAppManifestAndIcons(t *testing.T) {
 		t.Error("no service worker: it would not run over plain http on the LAN")
 	}
 }
+
+// A marking check says the same for yt-dlp and gallery-dl and gives no
+// count: gallery-dl lists already known items too, so a number would mislead.
+func TestMarkedTextHasNoCount(t *testing.T) {
+	b, err := webFS.ReadFile("web/i18n.js")
+	if err != nil {
+		t.Fatal(err)
+	}
+	src := string(b)
+	want := map[string]int{
+		`sub_marked:"Mevcut öğeler işaretlendi; bundan sonra yalnızca yeniler inecek."`:      1,
+		`note_marked:"Mevcut öğeler işaretlendi; bundan sonra yalnızca yeniler inecek."`:     1,
+		`sub_marked:"Existing items marked; only new ones will be downloaded from now on."`:  1,
+		`note_marked:"Existing items marked; only new ones will be downloaded from now on."`: 1,
+	}
+	for s, n := range want {
+		if got := strings.Count(src, s); got != n {
+			t.Errorf("%d× %s", got, s)
+		}
+	}
+	for _, k := range []string{"sub_marked_one", "note_marked_one"} {
+		if strings.Contains(src, k) {
+			t.Errorf("%s still there", k)
+		}
+	}
+}

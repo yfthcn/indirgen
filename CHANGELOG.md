@@ -2,7 +2,7 @@
 
 ## 1.0.1 · 2026-10-30
 
-- **Subscribing asks how**: the Subscribe button opens a small dialog with the check interval, how many of the newest items each check looks at, and "Don't download what is there now, only what comes next". With that ticked, the first check downloads nothing and marks the newest items as seen; later checks download only what is new. The subscription shows "N items marked as seen" and does not count them as new.
+- **Subscribing asks how**: the Subscribe button opens a small dialog with the check interval, how many of the newest items each check looks at, and "Don't download what is there now, only what comes next". With that ticked, the first check downloads nothing and marks the newest items as seen; later checks download only what is new. The subscription says "Existing items marked; only new ones will be downloaded from now on." and does not count them as new.
 - **Theme icons**: the auto, dark and light buttons in the settings header are drawn as icons, no longer as characters that some fonts showed in part.
 - **Running downloads on a phone**: their speed and time left stay on one line; less important figures give way when the screen is narrow.
 - **No macOS binary**: the native install is Linux only (amd64, arm64). Windows and macOS run İndirgen in Docker Desktop; the README has the steps (experimental, not tested there yet). The install script on a Mac now points there.

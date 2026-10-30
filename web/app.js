@@ -381,7 +381,7 @@ function jobHTML(j){
   }
   if (j.status==="done") bar = `<div class="bar ok"><i data-w="100"></i></div>`;
   const err = j.error && j.status!=="done" ? errHTML(j.error)
-    : j.note ? `<div class="stats">${esc(t("note_"+j.note, {n: j.marked}))}</div>` : "";
+    : j.note ? `<div class="stats">${esc(t("note_"+j.note))}</div>` : "";
 
   const files = j.file_names||[];
   let actions = "";
@@ -692,7 +692,7 @@ function subRow(x){
   else if (x.paused) state = esc(t("sub_paused"));
   else if (!x.last_check) state = esc(t("sub_never"));
   else state = esc(t("sub_checked",{t:ago(x.last_check)})) + " · " + (x.last_error ? `<span class="bad">${esc(x.last_error)}</span>`
-    : esc(x.last_marked ? t("sub_marked",{n:x.last_marked}) : x.last_new ? t("sub_new",{n:x.last_new}) : t("sub_nonew")));
+    : esc(x.last_marked ? t("sub_marked") : x.last_new ? t("sub_new",{n:x.last_new}) : t("sub_nonew")));
   const meta = [esc(x.host), `<span class="eng ${x.engine==="gallery-dl"?"g":"y"}">${esc(x.engine||"auto")}</span>`,
     prof && esc(x.opts.sections.map(s=>t("sec_"+s)).join(", ")), state,
     !x.paused && !x.running && x.next && esc(t("sub_next",{t:inT(x.next)})), x.total_new && esc(t("sub_total",{n:x.total_new}))].filter(Boolean).join(" · ");
