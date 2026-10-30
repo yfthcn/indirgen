@@ -30,10 +30,11 @@ const FILMS = [
   "_cMxraX_5RE", // Sprite Fright
   "aqz-KE-bpKQ", // Big Buck Bunny
   "eRsGyueVLvQ", // Sintel
+  "R6MlUcmOul8", // Tears of Steel
 ].map(yt);
-// Tears of Steel, in full quality under the speed limit: still running while
+// Elephants Dream, in full quality under the speed limit: still running while
 // the shots are taken (README.md: concurrency 16 makes that ~64 KB/s).
-const SLOW = yt("R6MlUcmOul8");
+const SLOW = yt("TLkA0RELQ1g");
 const INSPECT = yt("Y-rmzh0PI3c"); // Cosmos Laundromat: only inspected, the quality card
 
 const launch = () => chromium.launch({ executablePath: CHROMIUM });
@@ -76,7 +77,7 @@ async function seed() {
   const q = await api("/api/queue");
   await api("/api/queue", { ...q, rate_limit_mb: 1 });
   await addThroughUI(page, [SLOW], 0);
-  console.log("Sintel 1 MB/s ile başladı; şimdi: node capture.mjs shots");
+  console.log("Elephants Dream 1 MB/s sınırıyla başladı; şimdi: node capture.mjs shots");
   await b.close();
 }
 
@@ -148,6 +149,7 @@ async function context(b, { lang, theme, phone }) {
     locale: lang === "tr" ? "tr-TR" : "en-US",
     timezoneId: "Europe/Istanbul",
     reducedMotion: "reduce",
+    bypassCSP: true, // only so open() can add the style that hides the version
   });
   await ctx.addInitScript(l => {
     localStorage.setItem("indirgen.lang", JSON.stringify(l));
@@ -162,6 +164,8 @@ async function open(ctx) {
   const page = await ctx.newPage();
   page.on("pageerror", e => console.error("sayfa hatası:", e.message));
   await page.goto(APP, { waitUntil: "networkidle" });
+  // the app's version (header tag, first footer chip) would date the shots
+  await page.addStyleTag({ content: "#appVer, #foot > .chip:first-child { display: none !important }" });
   await page.waitForSelector("#jobs .job");
   return page;
 }

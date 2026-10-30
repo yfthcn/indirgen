@@ -30,16 +30,17 @@ env -i HOME=$T/home PATH=$T/bin LANG=C.UTF-8 TZ=Europe/Istanbul \
 In another terminal:
 
 ```sh
-node capture.mjs seed        # 8 Blender open movies through the UI, then Tears of Steel slowly
+node capture.mjs seed        # 9 Blender open movies through the UI, then Elephants Dream slowly
 node capture.mjs shots       # 9 views × TR/EN × dark/light → ../assets/shots/*.webp
 node capture.mjs og          # ../assets/og-image.png from og.html
 ```
 
 `seed` sets a 1 MB/s limit before the last film. İndirgen divides it among
 `concurrency` jobs, so with `"concurrency": 16` in `$T/data/config.json` (set
-it while the copy is stopped) Tears of Steel runs at 64 KB/s for about 40
+it while the copy is stopped) Elephants Dream runs at 64 KB/s for about 40
 minutes, long enough for every shot to show a download in progress. If it
-finishes, `node capture.mjs seed slow` after removing it starts it again.
+finishes, change `SLOW` in capture.mjs to another Blender open movie and run
+`node capture.mjs seed slow`.
 `node capture.mjs shots pairing,devices` retakes only those views.
 
 Only Blender open movies (CC BY) are downloaded. The test copy listens on
