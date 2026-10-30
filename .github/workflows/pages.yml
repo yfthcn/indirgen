@@ -1,0 +1,43 @@
+# The site at https://yfthcn.github.io/indirgen/, from site/. Runs only when
+# site/ changes on main, or by hand (Actions → pages → Run workflow); ci and
+# release do not depend on it. Needs Settings → Pages → Source: GitHub
+# Actions. Pages is not available for a private repository on the free plan,
+# so this job fails until the repository is public.
+name: pages
+on:
+  push:
+    branches: [main]
+    paths: ["site/**"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v7
+      - name: Site without its tools, at most 3 MB
+        run: |
+          mkdir _site
+          cp -R site/. _site/
+          rm -rf _site/tools
+          size=$(du -sb _site | cut -f1)
+          echo "site: $size bytes"
+          test "$size" -le 3145728 || { echo "::error::site is over 3 MB"; exit 1; }
+      - uses: actions/configure-pages@v6
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v5
